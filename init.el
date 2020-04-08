@@ -40,6 +40,9 @@ There are two things you can do about this warning:
 
 (setq line-spacing 0.15)
 
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+
 (defvar emacs-dir (file-name-directory "~/.emacs.d/")
   "The root dir of the Emacs distribution.")
 
@@ -55,9 +58,6 @@ There are two things you can do about this warning:
 (require 'core-ui)
 (require 'module-theme)
 (require 'module-web-mode)
-
-(require 'use-package-ensure)
-(setq use-package-always-ensure t)
 
 (use-package magit)
 (use-package markdown-mode)
