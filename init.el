@@ -21,24 +21,52 @@ There are two things you can do about this warning:
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" default)))
+    ("d0fd069415ef23ccc21ccb0e54d93bdbb996a6cce48ffce7f810826bb243502c" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" default)))
  '(org-agenda-files
    (quote
     ("~/Dysk Google/org/casual.org" "~/Dysk Google/org/school.org")))
  '(package-selected-packages
    (quote
-    (spacegray-theme ibuffer-projectile rainbow-delimiters linum-relative spacemacs-theme ibuffer-sidebar ace-window all-the-icons dashboard vscode-icon dired-sidebar darkroom use-package markdown-mode))))
+    (magit add-node-modules-path flycheck web-mode neotree spacegray-theme ibuffer-projectile rainbow-delimiters linum-relative spacemacs-theme ibuffer-sidebar ace-window all-the-icons dashboard vscode-icon dired-sidebar darkroom use-package markdown-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Consolas" :height 120)))))
+ '(default ((t (:family "Consolas" :height 130))))
+ '(neo-dir-link-face ((t (:foreground "#ffffff"))))
+ '(neo-file-link-face ((t (:foreground "#a7bca4"))))
+ '(neo-root-dir-face ((t (:foreground "#ffffff" :weight bold)))))
 
-;; (load-theme 'spacemacs-dark t)
-(load-theme 'spacegray t)
+(setq line-spacing 0.15)
 
-(global-hl-line-mode 1)
+(defvar emacs-dir (file-name-directory "~/.emacs.d/")
+  "The root dir of the Emacs distribution.")
+
+(defvar core-dir (expand-file-name "core" emacs-dir)
+  "The home of core functionality.")
+
+(defvar modules-dir (expand-file-name "modules" emacs-dir)
+  "This directory houses all of the modules.")
+
+(add-to-list 'load-path core-dir)
+(add-to-list 'load-path modules-dir)
+
+(require 'core-ui)
+(require 'module-theme)
+(require 'module-web-mode)
+
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+
+(use-package magit)
+(use-package markdown-mode)
+(use-package tex
+  :defer t
+  :ensure auctex
+  :config
+  (setq TeX-auto-save t))
+
 (defadvice linum-update-window (around linum-dynamic activate)
   (let* ((w (length (number-to-string
                      (count-lines (point-min) (point-max)))))
@@ -49,31 +77,13 @@ There are two things you can do about this warning:
   (visual-line-mode 1)
   (darkroom-tentative-mode 1))
 (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
 
-(setq ring-bell-function 'ignore)
-
-(use-package dired-sidebar
-  :ensure t
-  :commands (dired-sidebar-toggle-sidebar)
-  :init
-  (add-hook 'dired-sidebar-mode-hook
-            (lambda ()
-              (unless (file-remote-p default-directory)
-                (auto-revert-mode))))
+(use-package neotree
   :config
-  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-
-  (setq dired-sidebar-subtree-line-prefix "__")
-  (setq dired-sidebar-face `(:family "Consolas" :height 120))
-  (setq dired-sidebar-theme 'vscode)
-  (setq dired-sidebar-use-term-integration t)
-  (setq dired-sidebar-use-custom-font  t))
+  (setq neo-theme 'arrow
+	neo-smart-open t))
 
 (use-package ibuffer-projectile
-  :ensure t
   :commands (ibuffer-projectile-set-filter-groups
              ibuffer-projectile-generate-filter-groups)
   :init
@@ -92,13 +102,13 @@ There are two things you can do about this warning:
   :ensure nil
   :commands (ibuffer-sidebar-toggle-sidebar)
   :config
-  (setq ibuffer-sidebar-use-custom-font t)
-  (setq ibuffer-sidebar-face `(:family "Consolas" :height 120)))
+  (setq ibuffer-sidebar-use-custom-font 't
+	ibuffer-sidebar-face '(:family "Consolas" :height 120)))
 
+;; toggle neotree and ibuffer-sidebar simultaneously
 (defun sidebar-toggle ()
-  "Toggle both `dired-sidebar' and `ibuffer-sidebar'."
   (interactive)
-  (dired-sidebar-toggle-sidebar)
+  (neotree-toggle)
   (ibuffer-sidebar-toggle-sidebar))
 
 (global-set-key (kbd "C-x C-n") 'sidebar-toggle)
@@ -107,20 +117,26 @@ There are two things you can do about this warning:
 
 (use-package all-the-icons)
 
+(setq window-divider-mode 1)
+
 (use-package dashboard
-  :ensure t
   :config
   (dashboard-setup-startup-hook))
 
 (global-set-key (kbd "M-o") 'ace-window)
 (global-set-key (kbd "C-x C-a") 'org-agenda)
 
+(push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
+(setq default-process-coding-system '(utf-8 . utf-8))
+
+(use-package shell-pop)
+
+(global-set-key (kbd "C-`") 'shell-pop)
+
 (add-hook 'js-mode-hook #'rainbow-delimiters-mode)
 
 (setq w32-pass-apps-to-system nil)
 (setq w32-apps-modifier 'super)
-
-(toggle-scroll-bar -1)
 
 ;; stop creating those #auto-save# files
 (setq auto-save-default nil)
