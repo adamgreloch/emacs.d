@@ -1,35 +1,43 @@
+;;; module-theme.el --- Adam Greloch's module-theme.el File For GNU Emacs
+
+;; Copyright (C) 2020 Adam Greloch
+
+;; Author: Adam Greloch <zplhatesbananas@gmail.com>
+;; Version: 20200409
+;; Keywords: local, convenience
+
+;; Permission is hereby granted, free of charge, to any person obtaining a
+;; copy of this software and associated documentation files (the "Software"),
+;; to deal in the Software without restriction, including without limitation
+;; the rights to use, copy, modify, merge, publish, distribute, sublicense,
+;; and/or sell copies of the Software, and to permit persons to whom the
+;; Software is furnished to do so, subject to the following conditions:
+;;
+;; The above copyright notice and this permission notice shall be included
+;; in all copies or substantial portions of the Software.
+;;
+;; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+;; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+;; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+;; THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+;; OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+;; ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+;; OTHER DEALINGS IN THE SOFTWARE.
+
+;;; Commentary:
+
+;; This is my personal startup file for GNU Emacs.  It has only recently
+;; been tested on GNU Emacs 26.3. Since I'm a total beginner in GNU Emacs,
+;; beware of newbie moves.
+
+;;; Code:
+
 (setq dashboard-startup-banner '1)
 
 (use-package almost-mono-themes
   :config
   ;; (load-theme 'almost-mono-black t)
   (load-theme 'almost-mono-gray t))
-
-(custom-set-faces
- '(neo-root-dir-face ((t (:foreground "#ffffff"
-				      :weight bold))))
- '(neo-dir-link-face ((t (:foreground "#ffffff"))))
- '(neo-file-link-face ((t (:foreground "#a7bca4")))))
-
-;; (set-face-attribute 'mode-line nil
-;;                     :background "#353236"
-;;                     :foreground "#657b83"
-;;                     :box '(:line-width 4 :colOr "#353236")
-;;                     :overline nil
-;;                     :underline nil)
-
-;; (set-face-attribute 'mode-line-inactive nil
-;;                     :background "#1f2024"
-;;                     :foreground "#727072"
-;;                     :box '(:line-width 4 :color "#353236")
-;;                     :overline nil
-;;                     :underline nil)
-
-;; (set-face-attribute 'fringe nil
-;; 		    :background "#282b33")
-
-;; (set-face-attribute 'window-divider nil
-;; 		    :foreground "#1f2024")
 
 (provide 'module-theme)
 
