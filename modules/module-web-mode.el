@@ -23,4 +23,7 @@
 
 (add-hook 'flycheck-mode-hook 'add-node-modules-path)
 
+(use-package company)
+(add-hook 'after-init-hook 'global-company-mode)
+
 (provide 'module-web-mode)

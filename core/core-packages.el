@@ -1,4 +1,4 @@
-;;; core-ui.el --- Adam Greloch's core-ui.el File For GNU Emacs
+;;; core-packages.el --- Adam Greloch's core-packages.el File For GNU Emacs
 
 ;; Copyright (C) 2020 Adam Greloch
 
@@ -33,66 +33,20 @@
 ;;; Code:
 
 ;; ===========================================================================
-;; Core UI configuration
+;; Basic vc/organizational stuff
 ;; ===========================================================================
 
-(setq ring-bell-function 'ignore)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(toggle-scroll-bar -1)
+(use-package magit)
 
-(use-package rainbow-delimiters)
-(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-
-(add-hook 'prog-mode-hook 'linum-mode)
-(add-hook 'prog-mode-hook 'toggle-truncate-lines nil)
-
-;; ===========================================================================
-;; Navigation
-;; ===========================================================================
-
-(setq window-divider-mode 1)
-
-(use-package dashboard
-  :config
-  (dashboard-setup-startup-hook))
-
-(use-package ace-window)
-
-(use-package neotree
-  :config
-  (setq neo-theme 'arrow
-	neo-smart-open t))
-
-(use-package ibuffer-sidebar
-  :commands (ibuffer-sidebar-toggle-sidebar)
-  :config
-  (setq ibuffer-sidebar-use-custom-font 't
-	ibuffer-sidebar-face '(:family "Consolas" :height 120)))
-
-(use-package ibuffer-projectile
-  :commands (ibuffer-projectile-set-filter-groups
-             ibuffer-projectile-generate-filter-groups)
-  :init
-  (defun j-ibuffer-projectile-run ()
-    "Set up `ibuffer-projectile'."
-    (ibuffer-projectile-set-filter-groups)
-    (unless (eq ibuffer-sorting-mode 'alphabetic)
-      (ibuffer-do-sort-by-alphabetic)))
-
-  (add-hook 'ibuffer-sidebar-mode-hook #'j-ibuffer-projectile-run)
-  (add-hook 'ibuffer-hook #'j-ibuffer-projectile-run)
-  :config
-  (setq ibuffer-projectile-prefix ""))
+;; TODO: configure vs, org-agenda... probably going to split those to seperate
+;; modules
 
 ;; ===========================================================================
 ;; Shortcuts
 ;; ===========================================================================
 
-(global-set-key (kbd "M-o") 'ace-window)
-(global-set-key (kbd "C-x C-n") 'neotree-toggle)
-(global-set-key (kbd "C-x C-m") 'ibuffer-sidebar-toggle-sidebar)
+(global-set-key (kbd "C-x C-a") 'org-agenda)
 
-(provide 'core-ui)
+(provide 'core-packages)
 
-;;; core-ui.el ends here
+;;; core-packages.el ends here
