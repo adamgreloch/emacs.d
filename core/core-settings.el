@@ -36,6 +36,8 @@
 ;; Miscellaneous but important settings and fixes
 ;; ===========================================================================
 
+(set-language-environment "UTF-8")
+
 ;; stop creating those #auto-save# files
 (setq auto-save-default nil)
 (setq make-backup-files nil)
