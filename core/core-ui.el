@@ -39,7 +39,16 @@
 (setq ring-bell-function 'ignore)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
-(toggle-scroll-bar -1)
+
+;; went with modifying frame parameters to disable scroll-bars when daemon is
+;; running
+;; (toggle-scroll-bar -1)
+
+(defun my-disable-scroll-bars (frame)
+  (modify-frame-parameters frame
+                           '((vertical-scroll-bars . nil)
+                             (horizontal-scroll-bars . nil))))
+(add-hook 'after-make-frame-functions 'my-disable-scroll-bars)
 
 (use-package rainbow-delimiters)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
@@ -56,6 +65,9 @@
 (use-package dashboard
   :config
   (dashboard-setup-startup-hook))
+
+;; set *dashboard* as initial buffer when daemon is already running
+(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 
 (use-package ace-window)
 

@@ -98,7 +98,7 @@ There are two things you can do about this warning:
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("ffba0482d3548c9494e84c1324d527f73ea4e43fff8dfd0e48faa8fc6d5c2bc7" default)))
+    ("d0fd069415ef23ccc21ccb0e54d93bdbb996a6cce48ffce7f810826bb243502c" "ffba0482d3548c9494e84c1324d527f73ea4e43fff8dfd0e48faa8fc6d5c2bc7" default)))
  '(fringe-mode 20 nil (fringe))
  '(line-spacing 0.1)
  '(neo-theme (quote ascii))
