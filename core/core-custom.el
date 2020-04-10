@@ -61,10 +61,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Consolas" :height 130))))
- '(neo-dir-link-face ((t (:foreground "#ffffff"))))
- '(neo-file-link-face ((t (:foreground "#a7bca4"))))
- '(neo-root-dir-face ((t (:foreground "#ffffff" :weight bold)))))
+ '(default ((t (:family "Consolas" :height 130)))))
 
 (provide 'core-custom)
 

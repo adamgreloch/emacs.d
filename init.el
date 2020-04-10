@@ -74,6 +74,7 @@ There are two things you can do about this warning:
 (require 'core-settings)
 (require 'core-custom)
 (require 'core-ui)
+(require 'module-smart-compile)
 (require 'module-powershell6)
 (require 'module-theme)
 (require 'module-latex)
@@ -90,3 +91,37 @@ There are two things you can do about this warning:
 ;;     ad-do-it))
 
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("ffba0482d3548c9494e84c1324d527f73ea4e43fff8dfd0e48faa8fc6d5c2bc7" default)))
+ '(fringe-mode 20 nil (fringe))
+ '(line-spacing 0.1)
+ '(neo-theme (quote ascii))
+ '(org-agenda-files
+   (quote
+    ("~/Dysk Google/org/casual.org" "~/Dysk Google/org/school.org")))
+ '(package-selected-packages
+   (quote
+    (company shell-pop auctex magit add-node-modules-path flycheck web-mode neotree spacegray-theme ibuffer-projectile rainbow-delimiters linum-relative spacemacs-theme ibuffer-sidebar ace-window all-the-icons dashboard vscode-icon dired-sidebar darkroom use-package markdown-mode)))
+ '(shell-pop-autocd-to-working-dir nil)
+ '(shell-pop-shell-type
+   (quote
+    ("powershell6" "*powershell6*"
+     (lambda nil
+       (powershell6)))))
+ '(shell-pop-window-position "right"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "Consolas" :height 130))))
+ '(neo-button-face ((t (:underline nil))))
+ '(neo-dir-link-face ((t (:foreground "#ffffff"))))
+ '(neo-file-link-face ((t (:foreground "#a7bca4"))))
+ '(neo-root-dir-face ((t (:foreground "#ffffff" :weight bold)))))

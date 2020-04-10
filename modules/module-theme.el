@@ -39,6 +39,43 @@
   ;; (load-theme 'almost-mono-black t)
   (load-theme 'almost-mono-gray t))
 
+(set-face-attribute 'neo-dir-link-face nil
+		    :foreground "#ffffff")
+
+(set-face-attribute 'neo-file-link-face nil
+		    :foreground "#a7bca4")
+
+(set-face-attribute 'neo-root-dir-face nil
+		    :foreground "#ffffff"
+		    :weight 'bold)
+
+
+(bind-keys ("C-c tl" . (lambda ()
+			 (interactive)
+			 (load-theme 'almost-mono-cream)
+			 (set-face-attribute 'neo-dir-link-face nil
+					     :foreground "#000000")
+			 
+			 (set-face-attribute 'neo-file-link-face nil
+					     :foreground "#3c5e2b")
+			 
+			 (set-face-attribute 'neo-root-dir-face nil
+					     :foreground "#000000"
+					     :weight 'bold)))
+           ("C-c td" . (lambda ()
+			 (interactive)
+			 (load-theme 'almost-mono-gray)
+			 (set-face-attribute 'neo-dir-link-face nil
+					     :foreground "#ffffff")
+
+			 (set-face-attribute 'neo-file-link-face nil
+					     :foreground "#a7bca4")
+
+			 (set-face-attribute 'neo-root-dir-face nil
+					     :foreground "#ffffff"
+					     :weight 'bold))))
+
+
 (provide 'module-theme)
 
 ;;; module-theme.el ends here
