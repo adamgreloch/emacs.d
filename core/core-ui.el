@@ -3,8 +3,9 @@
 ;; Copyright (C) 2020 Adam Greloch
 
 ;; Author: Adam Greloch <zplhatesbananas@gmail.com>
-;; Version: 20200409
+;; Version: 20200410
 ;; Keywords: local, convenience
+;; URL: https://bitbucket.org/admq/emacs.d/
 
 ;; Permission is hereby granted, free of charge, to any person obtaining a
 ;; copy of this software and associated documentation files (the "Software"),
@@ -26,7 +27,7 @@
 
 ;;; Commentary:
 
-;; This is my personal startup file for GNU Emacs.  It has only recently
+;; This file is a part of my configuration for GNU Emacs.  It has only recently
 ;; been tested on GNU Emacs 26.3. Since I'm a total beginner in GNU Emacs,
 ;; beware of newbie moves.
 
@@ -40,9 +41,11 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 
+(add-hook 'text-mode-hook 'visual-line-mode)
+
 ;; went with modifying frame parameters to disable scroll-bars when daemon is
 ;; running
-;; (toggle-scroll-bar -1)
+(toggle-scroll-bar -1)
 
 (defun my-disable-scroll-bars (frame)
   (modify-frame-parameters frame
@@ -53,12 +56,33 @@
 (use-package rainbow-delimiters)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
-(add-hook 'prog-mode-hook 'linum-mode)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'toggle-truncate-lines nil)
 
 ;; ===========================================================================
 ;; Navigation
 ;; ===========================================================================
+
+;; allows undoing window layout changes at ease.  just do `C-c <LEFT>'
+(winner-mode)
+
+(use-package awesome-tab
+  :load-path "elisp/awesome-tab"
+  :config
+  (setq awesome-tab-display-icon nil)
+  (setq awesome-tab-height 130)
+  (awesome-tab-mode t))
+
+(global-set-key (kbd "s-1") 'awesome-tab-select-visible-tab)
+(global-set-key (kbd "s-2") 'awesome-tab-select-visible-tab)
+(global-set-key (kbd "s-3") 'awesome-tab-select-visible-tab)
+(global-set-key (kbd "s-4") 'awesome-tab-select-visible-tab)
+(global-set-key (kbd "s-5") 'awesome-tab-select-visible-tab)
+(global-set-key (kbd "s-6") 'awesome-tab-select-visible-tab)
+(global-set-key (kbd "s-7") 'awesome-tab-select-visible-tab)
+(global-set-key (kbd "s-8") 'awesome-tab-select-visible-tab)
+(global-set-key (kbd "s-9") 'awesome-tab-select-visible-tab)
+(global-set-key (kbd "s-0") 'awesome-tab-select-visible-tab)
 
 (setq window-divider-mode 1)
 
@@ -73,7 +97,7 @@
 
 (use-package neotree
   :config
-  (setq neo-theme 'arrow
+  (setq neo-theme 'ascii
 	neo-smart-open t))
 
 (use-package ibuffer-sidebar

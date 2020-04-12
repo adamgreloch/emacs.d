@@ -3,8 +3,9 @@
 ;; Copyright (C) 2020 Adam Greloch
 
 ;; Author: Adam Greloch <zplhatesbananas@gmail.com>
-;; Version: 20200409
+;; Version: 20200410
 ;; Keywords: local, convenience
+;; URL: https://bitbucket.org/admq/emacs.d/
 
 ;; Permission is hereby granted, free of charge, to any person obtaining a
 ;; copy of this software and associated documentation files (the "Software"),
@@ -26,7 +27,7 @@
 
 ;;; Commentary:
 
-;; This is my personal startup file for GNU Emacs.  It has only recently
+;; This file is a part of my configuration for GNU Emacs.  It has only recently
 ;; been tested on GNU Emacs 26.3. Since I'm a total beginner in GNU Emacs,
 ;; beware of newbie moves.
 

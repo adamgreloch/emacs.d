@@ -3,8 +3,9 @@
 ;; Copyright (C) 2020 Adam Greloch
 
 ;; Author: Adam Greloch <zplhatesbananas@gmail.com>
-;; Version: 20200409
+;; Version: 20200410
 ;; Keywords: local, convenience
+;; URL: https://bitbucket.org/admq/emacs.d/
 
 ;; Permission is hereby granted, free of charge, to any person obtaining a
 ;; copy of this software and associated documentation files (the "Software"),
@@ -26,21 +27,15 @@
 
 ;;; Commentary:
 
-;; This is my personal startup file for GNU Emacs.  It has only recently
+;; This file is a part of my configuration for GNU Emacs.  It has only recently
 ;; been tested on GNU Emacs 26.3. Since I'm a total beginner in GNU Emacs,
 ;; beware of newbie moves.
 
 ;;; Code:
 
-(use-package web-mode)
+(use-package rjsx-mode)
 
-(add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
-(setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
-(defun web-mode-init-hook ()
-  "Hooks for Web mode.  Adjust indent."
-  (setq web-mode-markup-indent-offset 4))
-  
-(add-hook 'web-mode-hook  'web-mode-init-hook)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
 
 (use-package flycheck)
 
@@ -48,18 +43,20 @@
               (append flycheck-disabled-checkers
                       '(javascript-jshint json-jsonlist)))
 
+(setq flycheck-check-syntax-automatically '(save mode-enable))
+
 ;; Enable eslint checker for web-mode
 (flycheck-add-mode 'javascript-eslint 'web-mode)
 
 ;; Enable flycheck globally
-(add-hook 'after-init-hook #'global-flycheck-mode)
+(add-hook 'prog-mode-hook #'flycheck-mode)
 
 (use-package add-node-modules-path)
 
 (add-hook 'flycheck-mode-hook 'add-node-modules-path)
 
 (use-package company)
-(add-hook 'after-init-hook 'global-company-mode)
+(add-hook 'prog-mode-hook 'company-mode)
 
 (provide 'module-web-mode)
 

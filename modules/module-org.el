@@ -1,4 +1,4 @@
-;;; module-markdown-mode.el --- Adam Greloch's module-markdown-mode.el File For GNU Emacs
+;;; module-org.el --- Adam Greloch's module-org.el File For GNU Emacs
 
 ;; Copyright (C) 2020 Adam Greloch
 
@@ -33,21 +33,9 @@
 
 ;;; Code:
 
-;; ===========================================================================
-;; `markdown-mode' configuration
-;; ===========================================================================
+(global-set-key (kbd "C-x C-a") 'org-agenda)
+(add-hook 'org-mode-hook 'org-indent-mode)
 
+(provide 'module-org)
 
-(use-package markdown-mode)
-
-(use-package darkroom)
-
-(defun my-markdown-mode-hook ()
-  (visual-line-mode 1)
-  (darkroom-tentative-mode 1))
-(add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
-
-
-(provide 'module-markdown-mode)
-
-;;; module-markdown-mode.el ends here
+;;; module-org.el ends here
