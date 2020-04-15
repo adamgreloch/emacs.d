@@ -56,6 +56,9 @@
 ;; under c:/)
 (setq default-directory "c:/git/" )
 
+;; replace selected text automatically when typing
+(delete-selection-mode 1)
+
 (provide 'core-settings)
 
 ;;; core-settings.el ends here

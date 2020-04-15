@@ -47,15 +47,6 @@
 
 (set-default 'preview-scale-function 1.3)
 
-(auto-revert-mode)
-
-(use-package pdf-tools)
-(pdf-tools-install)
-
-
-
-;; (setq pdf-view-use-scaling t)
-
 (provide 'module-latex)
 
 ;;; module-latex.el ends here

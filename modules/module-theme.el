@@ -76,10 +76,14 @@
 ;; 					     :foreground "#ffffff"
 ;; 					     :weight 'bold))))
 
-(use-package base16-theme
-  :ensure t
+;; (use-package base16-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'base16-ocean t))
+
+(use-package zenburn-theme
   :config
-  (load-theme 'base16-ocean t))
+  (load-theme 'zenburn t))
 
 (provide 'module-theme)
 

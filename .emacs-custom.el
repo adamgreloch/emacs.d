@@ -38,13 +38,30 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(LaTeX-indent-environment-list
+   (quote
+    (("verbatim" current-indentation)
+     ("verbatim*" current-indentation)
+     ("filecontents" current-indentation)
+     ("filecontents*" current-indentation)
+     ("align" LaTeX-indent-tabular)
+     ("align*" LaTeX-indent-tabular)
+     ("array" LaTeX-indent-tabular)
+     ("eqnarray" LaTeX-indent-tabular)
+     ("eqnarray*" LaTeX-indent-tabular)
+     ("displaymath")
+     ("equation")
+     ("equation*")
+     ("picture")
+     ("tabbing"))))
  '(TeX-view-program-selection
    (quote
     (((output-dvi style-pstricks)
       "dvips and start")
      (output-dvi "Yap")
-     (output-pdf "PDF Tools")
+     (output-pdf "SumatraPDF")
      (output-html "start"))))
+ '(cursor-type (quote (bar . 2)))
  '(custom-safe-themes
    (quote
     ("d0fd069415ef23ccc21ccb0e54d93bdbb996a6cce48ffce7f810826bb243502c" "ffba0482d3548c9494e84c1324d527f73ea4e43fff8dfd0e48faa8fc6d5c2bc7" default)))
@@ -63,7 +80,7 @@
     ("~/Dropbox/org/casual.org" "~/Dropbox/org/school.org" "c:/git/admq_latex_repo/admq_latex.org")))
  '(package-selected-packages
    (quote
-    (zenburn-theme pdf-tools awesome-tab rjsx-mode company shell-pop auctex magit add-node-modules-path flycheck neotree spacegray-theme ibuffer-projectile rainbow-delimiters linum-relative spacemacs-theme ibuffer-sidebar ace-window dashboard vscode-icon dired-sidebar darkroom use-package markdown-mode)))
+    (base16-theme which-key almost-mono-themes zenburn-theme pdf-tools awesome-tab rjsx-mode company shell-pop auctex magit add-node-modules-path flycheck neotree spacegray-theme ibuffer-projectile rainbow-delimiters linum-relative spacemacs-theme ibuffer-sidebar ace-window dashboard vscode-icon dired-sidebar darkroom use-package markdown-mode)))
  '(shell-pop-autocd-to-working-dir nil)
  '(shell-pop-shell-type
    (quote
@@ -78,9 +95,11 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Consolas" :height 130))))
  '(fringe ((t (:background "nil"))))
+ '(markdown-code-face ((t (:background "#383838" :foreground "#DFAF8F"))))
  '(neo-button-face ((t (:underline nil))))
  '(neo-dir-link-face ((t (:foreground "#ffffff"))))
  '(neo-file-link-face ((t (:foreground "#a7bca4"))))
- '(neo-root-dir-face ((t (:foreground "#ffffff" :weight bold)))))
+ '(neo-root-dir-face ((t (:foreground "#ffffff" :weight bold))))
+ '(vertical-border ((t (:foreground "#303030")))))
 
 ;;; .emacs-custom.el ends here

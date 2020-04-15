@@ -52,6 +52,10 @@ There are two things you can do about this warning:
 
 (package-initialize)
 
+(require 'server)
+(or (server-running-p)
+     (server-start))
+
 ;; ===========================================================================
 ;; Module loading
 ;; ===========================================================================
@@ -77,11 +81,11 @@ There are two things you can do about this warning:
 (require 'core-packages)
 (require 'core-settings)
 (require 'core-ui)
+(require 'module-theme)
 (require 'module-org)
 (require 'module-smart-compile)
 (require 'module-powershell6)
 (require 'module-latex)
-(require 'module-theme)
 (require 'markdown-mode)
 (require 'module-web-mode)
 
