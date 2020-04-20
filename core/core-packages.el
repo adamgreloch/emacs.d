@@ -42,6 +42,9 @@
 (use-package which-key)
 (which-key-mode)
 
+(use-package elcord)
+(elcord-mode)
+
 ;; TODO: configure vs, org-agenda... probably going to split those to seperate
 ;; modules
 

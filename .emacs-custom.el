@@ -69,6 +69,8 @@
  '(dashboard-items (quote ((recents . 10) (bookmarks . 5) (agenda . 5))))
  '(display-battery-mode nil)
  '(display-line-numbers-width nil)
+ '(elcord-display-buffer-details nil)
+ '(elcord-use-major-mode-as-main-icon t)
  '(fringe-mode 20 nil (fringe))
  '(line-spacing 0.1)
  '(mouse-wheel-progressive-speed nil)
@@ -78,7 +80,10 @@
     ("~/Dropbox/org/casual.org" "~/Dropbox/org/school.org" "c:/git/admq_latex_repo/admq_latex.org")))
  '(package-selected-packages
    (quote
-    (rainbow-mode ido-vertical-mode ivy diminish flx-ido base16-theme which-key awesome-tab rjsx-mode company shell-pop auctex magit add-node-modules-path flycheck neotree ibuffer-projectile rainbow-delimiters ibuffer-sidebar ace-window dashboard dired-sidebar darkroom use-package markdown-mode)))
+    (elcord rainbow-mode ido-vertical-mode ivy diminish flx-ido base16-theme which-key awesome-tab rjsx-mode company shell-pop auctex magit add-node-modules-path flycheck neotree ibuffer-projectile rainbow-delimiters ibuffer-sidebar ace-window dashboard dired-sidebar darkroom use-package markdown-mode)))
+ '(neo-theme (quote ascii))
+ '(neo-window-fixed-size nil)
+ '(neo-window-width 30)
  '(shell-pop-autocd-to-working-dir nil)
  '(shell-pop-shell-type
    (quote
