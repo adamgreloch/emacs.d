@@ -46,15 +46,6 @@
 
 ;; turn off graphical tooltips
 (tooltip-mode -1)
- 
-;; rebind menu key as super
-(setq w32-pass-apps-to-system nil)
-(setq w32-apps-modifier 'super)
-
-;; TODO find a way to make this variable happy on seperate machines (on my
-;; PC i've got my main git folder located under d:/ drive while on laptop it's
-;; under c:/)
-(setq default-directory "c:/git/" )
 
 ;; replace selected text automatically when typing
 (delete-selection-mode 1)

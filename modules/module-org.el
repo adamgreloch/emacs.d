@@ -33,6 +33,8 @@
 
 ;;; Code:
 
+(use-package org)
+
 (global-set-key (kbd "C-x C-a") 'org-agenda)
 (setq org-startup-indented 't)
 (setq org-hide-leading-stars 't)

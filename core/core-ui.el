@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020 Adam Greloch
 
 ;; Author: Adam Greloch <zplhatesbananas@gmail.com>
-;; Version: 20200410
+;; Version: 20200420
 ;; Keywords: local, convenience
 ;; URL: https://bitbucket.org/admq/emacs.d/
 
@@ -41,6 +41,8 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 
+(blink-cursor-mode +1)
+
 (add-hook 'text-mode-hook 'visual-line-mode)
 
 ;; went with modifying frame parameters to disable scroll-bars when daemon is
@@ -56,7 +58,8 @@
 (use-package rainbow-delimiters)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+;; will try working without line-numbers for a while
+;; (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'toggle-truncate-lines nil)
 
 ;; ===========================================================================
@@ -121,8 +124,15 @@
   :config
   (setq ibuffer-projectile-prefix ""))
 
+(use-package diminish
+  :config
+  (diminish 'projectile-mode)
+  (diminish 'which-key-mode)
+  (diminish 'auto-revert-mode))
+
 ;; ===========================================================================
 ;; Shortcuts
+
 ;; ===========================================================================
 
 (global-set-key (kbd "M-o") 'ace-window)

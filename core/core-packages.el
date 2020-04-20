@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020 Adam Greloch
 
 ;; Author: Adam Greloch <zplhatesbananas@gmail.com>
-;; Version: 20200410
+;; Version: 20200420
 ;; Keywords: local, convenience
 ;; URL: https://bitbucket.org/admq/emacs.d/
 
@@ -44,6 +44,25 @@
 
 ;; TODO: configure vs, org-agenda... probably going to split those to seperate
 ;; modules
+
+(use-package projectile
+  :config
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (projectile-mode +1))
+
+(use-package flx-ido
+  :config
+  (ido-mode 1)
+  (ido-everywhere 1)
+  (flx-ido-mode 1)
+  ;; disable ido faces to see flx highlights.
+  (setq ido-enable-flex-matching t)
+  (setq ido-use-faces nil))
+
+(use-package ido-vertical-mode
+  :config
+  (ido-vertical-mode 1))
 
 ;; ===========================================================================
 ;; Shortcuts

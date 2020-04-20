@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020 Adam Greloch
 
 ;; Author: Adam Greloch <zplhatesbananas@gmail.com>
-;; Version: 20200410
+;; Version: 20200420
 ;; Keywords: local, convenience
 ;; URL: https://bitbucket.org/admq/emacs.d/
 
@@ -75,18 +75,23 @@ There are two things you can do about this warning:
 (defvar modules-dir (expand-file-name "modules" emacs-dir)
   "This directory houses all of the modules.")
 
+(defvar machines-dir (expand-file-name "machines" emacs-dir)
+  "This directory stores my individual settings for different OS-es.")
+
 (add-to-list 'load-path core-dir)
 (add-to-list 'load-path modules-dir)
+(add-to-list 'load-path machines-dir)
 
 (require 'core-packages)
 (require 'core-settings)
 (require 'core-ui)
-(require 'module-theme)
 (require 'module-org)
 (require 'module-smart-compile)
 (require 'module-powershell6)
 (require 'module-latex)
-(require 'markdown-mode)
+(require 'module-markdown-mode)
 (require 'module-web-mode)
+(require 'module-theme)
+(require 'windows-settings)
 
 ;;; init.el ends here

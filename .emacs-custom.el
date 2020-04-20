@@ -1,3 +1,4 @@
+
 ;;; .emacs-custom.el --- Adam Greloch's .emacs-custom.el File for GNU Emacs
 
 ;; Copyright (C) 2020 Adam Greloch
@@ -61,10 +62,10 @@
      (output-dvi "Yap")
      (output-pdf "SumatraPDF")
      (output-html "start"))))
- '(cursor-type (quote (bar . 2)))
+ '(blink-cursor-mode t)
  '(custom-safe-themes
    (quote
-    ("d0fd069415ef23ccc21ccb0e54d93bdbb996a6cce48ffce7f810826bb243502c" "ffba0482d3548c9494e84c1324d527f73ea4e43fff8dfd0e48faa8fc6d5c2bc7" default)))
+    ("85e6bb2425cbfeed2f2b367246ad11a62fb0f6d525c157038a0d0eaaabc1bfee" "100eeb65d336e3d8f419c0f09170f9fd30f688849c5e60a801a1e6addd8216cb" "cbd85ab34afb47003fa7f814a462c24affb1de81ebf172b78cb4e65186ba59d2" "bffb799032a7404b33e431e6a1c46dc0ca62f54fdd20744a35a57c3f78586646" "d0fd069415ef23ccc21ccb0e54d93bdbb996a6cce48ffce7f810826bb243502c" "ffba0482d3548c9494e84c1324d527f73ea4e43fff8dfd0e48faa8fc6d5c2bc7" default)))
  '(dashboard-items (quote ((recents . 10) (bookmarks . 5) (agenda . 5))))
  '(display-battery-mode nil)
  '(display-line-numbers-width nil)
@@ -72,15 +73,12 @@
  '(line-spacing 0.1)
  '(mouse-wheel-progressive-speed nil)
  '(mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
- '(neo-theme (quote ascii))
- '(neo-window-fixed-size nil)
- '(neo-window-width 30)
  '(org-agenda-files
    (quote
     ("~/Dropbox/org/casual.org" "~/Dropbox/org/school.org" "c:/git/admq_latex_repo/admq_latex.org")))
  '(package-selected-packages
    (quote
-    (base16-theme which-key almost-mono-themes zenburn-theme pdf-tools awesome-tab rjsx-mode company shell-pop auctex magit add-node-modules-path flycheck neotree spacegray-theme ibuffer-projectile rainbow-delimiters linum-relative spacemacs-theme ibuffer-sidebar ace-window dashboard vscode-icon dired-sidebar darkroom use-package markdown-mode)))
+    (rainbow-mode ido-vertical-mode ivy diminish flx-ido base16-theme which-key awesome-tab rjsx-mode company shell-pop auctex magit add-node-modules-path flycheck neotree ibuffer-projectile rainbow-delimiters ibuffer-sidebar ace-window dashboard dired-sidebar darkroom use-package markdown-mode)))
  '(shell-pop-autocd-to-working-dir nil)
  '(shell-pop-shell-type
    (quote
@@ -94,12 +92,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Consolas" :height 130))))
- '(fringe ((t (:background "nil"))))
- '(markdown-code-face ((t (:background "#383838" :foreground "#DFAF8F"))))
- '(neo-button-face ((t (:underline nil))))
- '(neo-dir-link-face ((t (:foreground "#ffffff"))))
- '(neo-file-link-face ((t (:foreground "#a7bca4"))))
- '(neo-root-dir-face ((t (:foreground "#ffffff" :weight bold))))
- '(vertical-border ((t (:foreground "#303030")))))
+ '(fringe ((t (:background "nil")))))
 
 ;;; .emacs-custom.el ends here

@@ -68,3 +68,4 @@ nov-places
 transient/
 /server/
 bookmarks
+.local-settings.el
