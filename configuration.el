@@ -179,6 +179,78 @@
 
 (add-to-list 'org-modules 'org-tempo t)
 
+(require 'ox-latex)
+(add-to-list 'org-latex-classes
+           '("ADMQ-scrartcl"
+         "\\documentclass[DIV=calc, 11pt]{scrartcl}
+\\usepackage{xpatch}
+\\makeatletter
+    \\xpatchcmd{\\@maketitle}{\\begin{center}}{\\begin{flushleft}}{}{}
+    \\xpatchcmd{\\@maketitle}{\\end{center}}{\\end{flushleft}}{}{}
+    \\xpatchcmd{\\@maketitle}{\\begin{tabular}[t]{c}}{\\begin{tabular}[t]{@{}l@{}}}{}{}
+\\makeatother
+
+\\usepackage[activate=true,
+    final,
+    babel=true,
+    auto=true,
+    expansion,
+    protrusion=true,
+    tracking=true,
+    kerning=true,
+    spacing=true,
+    factor=0,
+    stretch=15,
+    shrink=30]{microtype}
+
+\\usepackage[utf8]{inputenc}
+\\usepackage{polski}
+\\usepackage[polish]{babel}
+\\usepackage{setspace}
+\\usepackage[textsize=scriptsize, colorinlistoftodos, obeyDraft]{todonotes}
+
+\\newcommand{\\todoim}[2][]
+{\\todo[color=red, #1]{#2}}
+
+\\newcommand{\\todomed}[2][]
+{\\todo[color=yellow, #1]{#2}}
+
+\\usepackage{marginnote}
+\\renewcommand*{\\marginfont}{\\color{gray}\\small\\ttfamily}
+
+\\usepackage[hidelinks]{hyperref}
+
+\\setkomafont{date}{%
+    \\usekomafont{subtitle}
+    }
+
+\\setkomafont{author}{%
+    \\usekomafont{subtitle}
+    }
+
+[NO-DEFAULT-PACKAGES]
+      [PACKAGES]
+      [EXTRA]
+
+\\setstretch{1}
+
+\\usepackage{geometry}
+\\geometry{a4paper, margin=0.5in, right=1.7in, bottom=0.7in, footskip=0.3in, marginpar=1.2in}
+
+\\usepackage{enumitem}
+\\setlist[itemize]{topsep=0.3em, itemsep=0em, label={\\scriptsize\\textbullet}}
+\\setlist[enumerate]{topsep=0.3em, leftmargin=2.8em, itemsep=0em, label={\\small\\textbf{\\arabic*.}}}
+
+\\usepackage{amsmath, amsthm}
+\\usepackage{natbib}
+
+\\newtheorem{theorem}{Twierdzenie}
+\\numberwithin{equation}{section}
+\\setlength{\\parindent}{0em}"
+         ("\\section{%s}" . "\\section*{%s}")
+         ("\\subsection{%s}" . "\\subsection*{%s}")
+         ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+
 (use-package rainbow-delimiters)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 

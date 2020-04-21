@@ -66,6 +66,7 @@ network-security.data
 *.ogg
 nov-places
 transient/
-/server/
+server/
 bookmarks
 .local-settings.el
+auto/
