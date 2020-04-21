@@ -101,62 +101,6 @@ This ensures custom-set variables and faces land in their cozy home without any 
 (use-package ace-window)
 (global-set-key (kbd "M-o") 'ace-window)
 #+END_SRC
-* Miscellaneous user interface tweaks
-** dashboard config
-#+BEGIN_SRC emacs-lisp
-(use-package dashboard
-  :ensure t
-  :config
-  (setq dashboard-items '((recents  . 10)
-  (bookmarks . 5)
-  (projects . 5)
-  (agenda . 5)))
-  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-  (setq dashboard-startup-banner '1)
-  (dashboard-setup-startup-hook))
-#+END_SRC
-** replace selected text automatically when typing
-#+BEGIN_SRC emacs-lisp
-(delete-selection-mode 1)
-#+END_SRC
-** disable ring bell, menu/tool/scroll bar
-#+BEGIN_SRC emacs-lisp
-(setq ring-bell-function 'ignore)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(toggle-scroll-bar -1)
-#+END_SRC
-*** TODO check if scroll-bar in daemon mode is being disabled properly by toggle or by a function below
-#+BEGIN_SRC emacs-lisp
-(defun my-disable-scroll-bars (frame)
-  (modify-frame-parameters frame
-                           '((vertical-scroll-bars . nil)
-                             (horizontal-scroll-bars . nil))))
-(add-hook 'after-make-frame-functions 'my-disable-scroll-bars)
-#+END_SRC
-** line numbers (disabled)
-Will try working without line-numbers for a while
-#+BEGIN_SRC emacs-lisp
-;; (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(add-hook 'prog-mode-hook 'toggle-truncate-lines nil)
-#+END_SRC
-*** TODO what on earth were =truncate-lines=?
-** cursor settings (blinking)
-#+BEGIN_SRC emacs-lisp
-(blink-cursor-mode +1)
-#+END_SRC
-** =diminish= - hide some obvious minor modes
-#+BEGIN_SRC emacs-lisp
-(use-package diminish
-  :config
-  (diminish 'projectile-mode)
-  (diminish 'which-key-mode)
-  (diminish 'auto-revert-mode))
-#+END_SRC
-** =rainbow-mode=
-#+BEGIN_SRC emacs-lisp
-(use-package rainbow-mode)
-#+END_SRC
 * Inferior PowerShell6 and shell-pop 
 ** define powershell6
 #+BEGIN_SRC emacs-lisp
@@ -574,6 +518,62 @@ which is defined in `smart-compile-alist'."
   (visual-line-mode 1)
   (darkroom-tentative-mode 1))
 (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
+#+END_SRC
+* Miscellaneous user interface tweaks
+** dashboard config
+#+BEGIN_SRC emacs-lisp
+(use-package dashboard
+  :ensure t
+  :config
+  (setq dashboard-items '((recents  . 10)
+  (bookmarks . 5)
+  (projects . 5)
+  (agenda . 5)))
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+  (setq dashboard-startup-banner '1)
+  (dashboard-setup-startup-hook))
+#+END_SRC
+** replace selected text automatically when typing
+#+BEGIN_SRC emacs-lisp
+(delete-selection-mode 1)
+#+END_SRC
+** disable ring bell, menu/tool/scroll bar
+#+BEGIN_SRC emacs-lisp
+(setq ring-bell-function 'ignore)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(toggle-scroll-bar -1)
+#+END_SRC
+*** TODO check if scroll-bar in daemon mode is being disabled properly by toggle or by a function below
+#+BEGIN_SRC emacs-lisp
+(defun my-disable-scroll-bars (frame)
+  (modify-frame-parameters frame
+                           '((vertical-scroll-bars . nil)
+                             (horizontal-scroll-bars . nil))))
+(add-hook 'after-make-frame-functions 'my-disable-scroll-bars)
+#+END_SRC
+** line numbers (disabled)
+Will try working without line-numbers for a while
+#+BEGIN_SRC emacs-lisp
+;; (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'prog-mode-hook 'toggle-truncate-lines nil)
+#+END_SRC
+*** TODO what on earth were =truncate-lines=?
+** cursor settings (blinking)
+#+BEGIN_SRC emacs-lisp
+(blink-cursor-mode +1)
+#+END_SRC
+** =diminish= - hide some obvious minor modes
+#+BEGIN_SRC emacs-lisp
+(use-package diminish
+  :config
+  (diminish 'projectile-mode)
+  (diminish 'which-key-mode)
+  (diminish 'auto-revert-mode))
+#+END_SRC
+** =rainbow-mode=
+#+BEGIN_SRC emacs-lisp
+(use-package rainbow-mode)
 #+END_SRC
 * Theme
 ** Custom colors for light/dark theme

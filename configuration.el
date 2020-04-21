@@ -94,42 +94,32 @@
 
 (global-set-key (kbd "C-`") 'shell-pop)
 
-(use-package dashboard
-  :ensure t
+(use-package magit)
+
+(use-package which-key)
+(which-key-mode)
+
+(use-package projectile
   :config
-  (setq dashboard-items '((recents  . 10)
-  (bookmarks . 5)
-  (projects . 5)
-  (agenda . 5)))
-  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-  (setq dashboard-startup-banner '1)
-  (dashboard-setup-startup-hook))
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (projectile-mode +1))
 
-(delete-selection-mode 1)
-
-(setq ring-bell-function 'ignore)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(toggle-scroll-bar -1)
-
-(defun my-disable-scroll-bars (frame)
-  (modify-frame-parameters frame
-                           '((vertical-scroll-bars . nil)
-                             (horizontal-scroll-bars . nil))))
-(add-hook 'after-make-frame-functions 'my-disable-scroll-bars)
-
-;; (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(add-hook 'prog-mode-hook 'toggle-truncate-lines nil)
-
-(blink-cursor-mode +1)
-
-(use-package diminish
+(use-package flx-ido
   :config
-  (diminish 'projectile-mode)
-  (diminish 'which-key-mode)
-  (diminish 'auto-revert-mode))
+  (ido-mode 1)
+  (ido-everywhere 1)
+  (flx-ido-mode 1)
+  ;; disable ido faces to see flx highlights.
+  (setq ido-enable-flex-matching t)
+  (setq ido-use-faces nil))
 
-(use-package rainbow-mode)
+(use-package ido-vertical-mode
+  :config
+  (ido-vertical-mode 1))
+
+(use-package elcord)
+(elcord-mode)
 
 (use-package latex
   :defer t
@@ -186,6 +176,8 @@
               (widen)
               (org-end-of-subtree t t)
               (org-paste-subtree level tree-text))))))))
+
+(add-to-list 'org-modules 'org-tempo t)
 
 (use-package rainbow-delimiters)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
@@ -446,34 +438,42 @@ which is defined in `smart-compile-alist'."
   (darkroom-tentative-mode 1))
 (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
 
-(use-package magit)
-
-(use-package which-key)
-(which-key-mode)
-
-(use-package projectile
+(use-package dashboard
+  :ensure t
   :config
-  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  (projectile-mode +1))
+  (setq dashboard-items '((recents  . 10)
+  (bookmarks . 5)
+  (projects . 5)
+  (agenda . 5)))
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+  (setq dashboard-startup-banner '1)
+  (dashboard-setup-startup-hook))
 
-(use-package flx-ido
+(delete-selection-mode 1)
+
+(setq ring-bell-function 'ignore)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(toggle-scroll-bar -1)
+
+(defun my-disable-scroll-bars (frame)
+  (modify-frame-parameters frame
+                           '((vertical-scroll-bars . nil)
+                             (horizontal-scroll-bars . nil))))
+(add-hook 'after-make-frame-functions 'my-disable-scroll-bars)
+
+;; (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'prog-mode-hook 'toggle-truncate-lines nil)
+
+(blink-cursor-mode +1)
+
+(use-package diminish
   :config
-  (ido-mode 1)
-  (ido-everywhere 1)
-  (flx-ido-mode 1)
-  ;; disable ido faces to see flx highlights.
-  (setq ido-enable-flex-matching t)
-  (setq ido-use-faces nil))
+  (diminish 'projectile-mode)
+  (diminish 'which-key-mode)
+  (diminish 'auto-revert-mode))
 
-(use-package ido-vertical-mode
-  :config
-  (ido-vertical-mode 1))
-
-(use-package elcord)
-(elcord-mode)
-
-(add-to-list 'org-modules 'org-tempo t)
+(use-package rainbow-mode)
 
 (defvar d-neo-dir-root '"#bb9584")
 (defvar d-neo-file-link '"#b8afad")
