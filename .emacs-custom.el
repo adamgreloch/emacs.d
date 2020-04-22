@@ -1,4 +1,4 @@
-(custom-set-variables
+ (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
@@ -34,8 +34,8 @@
  '(display-line-numbers-width nil)
  '(elcord-display-buffer-details nil)
  '(elcord-use-major-mode-as-main-icon t)
- '(fringe-mode 20 nil (fringe))
- '(line-spacing 0.1)
+ '(fringe-mode 6 nil (fringe))
+;; '(line-spacing 0.1)
  '(mouse-wheel-progressive-speed nil)
  '(mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
  '(neo-theme (quote ascii))
@@ -46,7 +46,7 @@
     ("~/.emacs.d/configuration.org" "~/Dropbox/org/casual.org" "~/Dropbox/org/school.org")))
  '(package-selected-packages
    (quote
-    (org-mode elcord rainbow-mode ido-vertical-mode ivy diminish flx-ido base16-theme which-key awesome-tab rjsx-mode company shell-pop auctex magit add-node-modules-path flycheck neotree ibuffer-projectile rainbow-delimiters ibuffer-sidebar ace-window dashboard dired-sidebar darkroom use-package markdown-mode)))
+    (org-plus-contrib org-mode elcord rainbow-mode ido-vertical-mode ivy diminish flx-ido base16-theme which-key awesome-tab rjsx-mode company shell-pop auctex magit add-node-modules-path flycheck neotree ibuffer-projectile rainbow-delimiters ibuffer-sidebar ace-window dashboard dired-sidebar darkroom use-package markdown-mode)))
  '(shell-pop-autocd-to-working-dir nil)
  '(shell-pop-shell-type
    (quote
@@ -59,7 +59,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Consolas" :height 130))))
+ '(default ((t (:family "Meslo LG S" :height 110 :weight normal :spacing 90))))
  '(fringe ((t (:background "nil")))))
 
 ;;; .emacs-custom.el ends here
