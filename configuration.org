@@ -1,6 +1,8 @@
 #+TITLE: Emacs configuration
 
-* TODO finish throwing and documenting stuff
+* Maintenance
+** TODO finish throwing and documenting stuff
+** TODO make =smart-compile= buffer somehow r/w for data input
 
 * Basic fundamental stuff
 ** Set MELPA up and running.
@@ -49,7 +51,7 @@ This ensures custom-set variables and faces land in their cozy home without any 
   :load-path "elisp/awesome-tab"
   :config
   (setq awesome-tab-display-icon nil)
-  (setq awesome-tab-height 100)
+  (setq awesome-tab-height 110)
   (awesome-tab-mode t))
 
 (global-set-key (kbd "s-1") 'awesome-tab-select-visible-tab)
@@ -134,10 +136,15 @@ This ensures custom-set variables and faces land in their cozy home without any 
 
 (global-set-key (kbd "C-`") 'shell-pop)
 #+END_SRC
-* VC/project management
+* VC/project management/IDO
 ** Magit
 #+BEGIN_SRC emacs-lisp
 (use-package magit)
+#+END_SRC
+** Discord integration
+#+BEGIN_SRC emacs-lisp
+(use-package elcord)
+(elcord-mode)
 #+END_SRC
 ** =which-key=
 #+BEGIN_SRC emacs-lisp
@@ -165,10 +172,14 @@ This ensures custom-set variables and faces land in their cozy home without any 
   :config
   (ido-vertical-mode 1))
 #+END_SRC
-** Discord integration
+** Smex auto-completion                                           :shortcut:
 #+BEGIN_SRC emacs-lisp
-(use-package elcord)
-(elcord-mode)
+(use-package smex)
+(smex-initialize)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 #+END_SRC
 * LaTeX
 ** Basic settings
@@ -183,7 +194,7 @@ This ensures custom-set variables and faces land in their cozy home without any 
 
 (set-default 'preview-scale-function 1.3)
 #+END_SRC
-* Org-mode
+* Org
 ** Fundamental configuration, basic shortcuts                      :shortcut:
 #+BEGIN_SRC emacs-lisp
 (use-package org)
@@ -241,7 +252,8 @@ This ensures custom-set variables and faces land in their cozy home without any 
 (add-to-list 'org-modules 'org-tempo t)
 #+END_SRC
 *** TODO discover =org-tempo= more
-** export org files to LaTeX with ADMQ-math template
+** Exporting org files
+*** export org files to LaTeX with ADMQ-math template
 #+BEGIN_SRC emacs-lisp
 (require 'ox-latex)
 (add-to-list 'org-latex-classes
@@ -315,7 +327,7 @@ This ensures custom-set variables and faces land in their cozy home without any 
          ("\\subsection{%s}" . "\\subsection*{%s}")
          ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
 #+END_SRC
-** export org files to LaTeX with ADMQ-text template
+*** export org files to LaTeX with ADMQ-text template
 #+BEGIN_SRC emacs-lisp
 (require 'ox-latex)
 (add-to-list 'org-latex-classes
@@ -388,12 +400,18 @@ This ensures custom-set variables and faces land in their cozy home without any 
          ("\\subsection{%s}" . "\\subsection*{%s}")
          ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
 #+END_SRC
-** open export in SumatraPDF
+*** open export in SumatraPDF
 #+BEGIN_SRC emacs-lisp
 (eval-after-load "org"
   '(progn
      ;; Change .pdf association directly within the alist
      (setcdr (assoc "\\.pdf\\'" org-file-apps) "SumatraPDF %s")))
+#+END_SRC
+** =org-journal= 
+#+BEGIN_SRC emacs-lisp
+(use-package org-journal
+:config
+(setq org-journal-dir "~/Dropbox/journal/"))
 #+END_SRC
 * Prog modes
 ** General settings
@@ -732,10 +750,10 @@ Will try working without line-numbers for a while
 * Theme
 ** Custom colors for light/dark theme
 #+BEGIN_SRC emacs-lisp
-(defvar d-neo-dir-root '"#bb9584")
-(defvar d-neo-file-link '"#b8afad")
-(defvar d-neo-expand-btn '"#8ab3b5")
-(defvar d-org-hide '"#3b3228")
+(defvar d-neo-dir-root '"#9989cc")
+(defvar d-neo-file-link '"#dbdde0")
+(defvar d-neo-expand-btn '"#d07346")
+(defvar d-org-hide '"#061229")
 (defvar d-markdown-code-bg '"#40362b")
 (defvar l-neo-dir-root '"#d65d0e")
 (defvar l-neo-file-link '"#665c54")
@@ -743,12 +761,12 @@ Will try working without line-numbers for a while
 (defvar l-org-hide '"#f9f5d7")
 (defvar l-markdown-code-bg '"#f2eed0")
 #+END_SRC
-** Load =base16-mocha= and set it as a default theme
+** Load =base16-phd= and set it as a default theme
 #+BEGIN_SRC emacs-lisp
 (use-package base16-theme
   :ensure t
   :config
-  (load-theme 'base16-mocha t))
+  (load-theme 'base16-phd t))
 #+END_SRC
 ** Customize neotree, org, markdown-code faces
 #+BEGIN_SRC emacs-lisp
@@ -796,7 +814,7 @@ Will try working without line-numbers for a while
 					     :inherit 'nil)))
            ("C-c td" . (lambda ()
 			 (interactive)
-			 (load-theme 'base16-mocha)
+			 (load-theme 'base16-phd)
 			 (set-face-attribute 'neo-dir-link-face nil
 					     :foreground d-neo-dir-root)
 			 

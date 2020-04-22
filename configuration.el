@@ -24,7 +24,7 @@
   :load-path "elisp/awesome-tab"
   :config
   (setq awesome-tab-display-icon nil)
-  (setq awesome-tab-height 100)
+  (setq awesome-tab-height 110)
   (awesome-tab-mode t))
 
 (global-set-key (kbd "s-1") 'awesome-tab-select-visible-tab)
@@ -96,6 +96,9 @@
 
 (use-package magit)
 
+(use-package elcord)
+(elcord-mode)
+
 (use-package which-key)
 (which-key-mode)
 
@@ -118,8 +121,12 @@
   :config
   (ido-vertical-mode 1))
 
-(use-package elcord)
-(elcord-mode)
+(use-package smex)
+(smex-initialize)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 (use-package latex
   :defer t
@@ -326,6 +333,10 @@
   '(progn
      ;; Change .pdf association directly within the alist
      (setcdr (assoc "\\.pdf\\'" org-file-apps) "SumatraPDF %s")))
+
+(use-package org-journal
+:config
+(setq org-journal-dir "~/Dropbox/journal/"))
 
 (use-package rainbow-delimiters)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
@@ -623,10 +634,10 @@ which is defined in `smart-compile-alist'."
 
 (use-package rainbow-mode)
 
-(defvar d-neo-dir-root '"#bb9584")
-(defvar d-neo-file-link '"#b8afad")
-(defvar d-neo-expand-btn '"#8ab3b5")
-(defvar d-org-hide '"#3b3228")
+(defvar d-neo-dir-root '"#9989cc")
+(defvar d-neo-file-link '"#dbdde0")
+(defvar d-neo-expand-btn '"#d07346")
+(defvar d-org-hide '"#061229")
 (defvar d-markdown-code-bg '"#40362b")
 (defvar l-neo-dir-root '"#d65d0e")
 (defvar l-neo-file-link '"#665c54")
@@ -637,7 +648,7 @@ which is defined in `smart-compile-alist'."
 (use-package base16-theme
   :ensure t
   :config
-  (load-theme 'base16-mocha t))
+  (load-theme 'base16-phd t))
 
 (set-face-attribute 'neo-dir-link-face nil
 		    :foreground d-neo-dir-root)
@@ -681,7 +692,7 @@ which is defined in `smart-compile-alist'."
 					     :inherit 'nil)))
            ("C-c td" . (lambda ()
 			 (interactive)
-			 (load-theme 'base16-mocha)
+			 (load-theme 'base16-phd)
 			 (set-face-attribute 'neo-dir-link-face nil
 					     :foreground d-neo-dir-root)
 			 

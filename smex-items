@@ -1,0 +1,26 @@
+
+;; ----- smex-history -----
+(
+ org-journal-mode
+ toggle-word-wrap
+ toggle-truncate-lines
+ eval-buffer
+ rainbow-mode
+ darkroom-tentative-mode
+ load-theme
+)
+
+;; ----- smex-data -----
+(
+ (projectile-invalidate-cache . 1)
+ (darkroom-tentative-mode . 5)
+ (darkroom-decrease-margins . 1)
+ (package-install . 1)
+ (package-delete . 3)
+ (load-theme . 2)
+ (rainbow-mode . 5)
+ (eval-buffer . 1)
+ (toggle-truncate-lines . 2)
+ (toggle-word-wrap . 2)
+ (org-journal-mode . 2)
+)
