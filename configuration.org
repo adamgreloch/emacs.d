@@ -67,26 +67,6 @@ This ensures custom-set variables and faces land in their cozy home without any 
 (tooltip-mode -1)
 #+END_SRC
 * Navigation
-** buffer tabs
-#+BEGIN_SRC emacs-lisp
-(use-package awesome-tab
-  :load-path "elisp/awesome-tab"
-  :config
-  (setq awesome-tab-display-icon nil)
-  (setq awesome-tab-height 110)
-  (awesome-tab-mode t))
-
-(global-set-key (kbd "s-1") 'awesome-tab-select-visible-tab)
-(global-set-key (kbd "s-2") 'awesome-tab-select-visible-tab)
-(global-set-key (kbd "s-3") 'awesome-tab-select-visible-tab)
-(global-set-key (kbd "s-4") 'awesome-tab-select-visible-tab)
-(global-set-key (kbd "s-5") 'awesome-tab-select-visible-tab)
-(global-set-key (kbd "s-6") 'awesome-tab-select-visible-tab)
-(global-set-key (kbd "s-7") 'awesome-tab-select-visible-tab)
-(global-set-key (kbd "s-8") 'awesome-tab-select-visible-tab)
-(global-set-key (kbd "s-9") 'awesome-tab-select-visible-tab)
-(global-set-key (kbd "s-0") 'awesome-tab-select-visible-tab)
-#+END_SRC
 ** neotree                                                        :shortcut:
 #+BEGIN_SRC emacs-lisp
 (use-package neotree
@@ -305,11 +285,15 @@ This ensures custom-set variables and faces land in their cozy home without any 
               (org-end-of-subtree t t)
               (org-paste-subtree level tree-text))))))))
 #+END_SRC
-** Enable bindings such as =<s= back
+** Enable bindings such as =<s= back                            :orgmodule:
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'org-modules 'org-tempo t)
 #+END_SRC
 *** TODO discover =org-tempo= more
+** Intuitively clickable checkboxes                              :orgmodule:
+#+BEGIN_SRC emacs-lisp
+  (require 'org-mouse)
+#+END_SRC
 ** Exporting org files
 *** export org files to LaTeX with ADMQ-math template
 #+BEGIN_SRC emacs-lisp
