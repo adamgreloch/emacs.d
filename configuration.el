@@ -625,7 +625,12 @@ which is defined in `smart-compile-alist'."
 
 (add-hook 'text-mode-hook 'visual-line-mode)
 
-(use-package markdown-mode)
+(use-package vmd-mode)
+
+(use-package markdown-mode
+  :config
+  (setq markdown-live-preview-engine 'vmd
+        markdown-command "vmd"))
 
 (use-package darkroom)
 
