@@ -27,6 +27,10 @@
      (output-dvi "Yap")
      (output-pdf "SumatraPDF")
      (output-html "start"))))
+ '(ansi-color-names-vector
+   ["#061229" "#d07346" "#99bf52" "#fbd461" "#5299bf" "#9989cc" "#5299bf" "#b8bbc2"])
+ '(ansi-term-color-vector
+   [unspecified "#061229" "#d07346" "#99bf52" "#fbd461" "#5299bf" "#9989cc" "#5299bf" "#b8bbc2"] t)
  '(blink-cursor-mode t)
  '(custom-safe-themes
    (quote
@@ -48,7 +52,7 @@
  '(org-journal-file-format "%Y%m%d.org")
  '(package-selected-packages
    (quote
-    (vmd-mode org-journal smex org-plus-contrib org-mode elcord rainbow-mode ido-vertical-mode ivy diminish flx-ido base16-theme which-key awesome-tab rjsx-mode company shell-pop auctex magit add-node-modules-path flycheck neotree ibuffer-projectile rainbow-delimiters ibuffer-sidebar ace-window dashboard dired-sidebar darkroom use-package markdown-mode)))
+    (ido-grid-mode vmd-mode org-journal smex org-plus-contrib org-mode elcord rainbow-mode ido-vertical-mode ivy diminish flx-ido base16-theme which-key awesome-tab rjsx-mode company shell-pop auctex magit add-node-modules-path flycheck neotree ibuffer-projectile rainbow-delimiters ibuffer-sidebar ace-window dashboard dired-sidebar darkroom use-package markdown-mode)))
  '(shell-pop-autocd-to-working-dir nil)
  '(shell-pop-shell-type
    (quote

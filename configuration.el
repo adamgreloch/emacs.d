@@ -145,9 +145,22 @@
   (setq ido-enable-flex-matching t)
   (setq ido-use-faces nil))
 
-(use-package ido-vertical-mode
-  :config
-  (ido-vertical-mode 1))
+;; (use-package ido-vertical-mode
+;;   :config
+;;   (ido-vertical-mode 1))
+
+(use-package ido-grid-mode)
+
+(defun ido-vertical-please (o &rest args)
+  (let ((ido-grid-mode-max-columns 1)
+        (ido-grid-mode-max-rows 15) ;; bigger list than usual
+          (ido-grid-mode-min-rows 1) ;; let it shrink
+          (ido-grid-mode-start-collapsed nil) ;; pop up tall at the start
+          ;; why not have a different prefix as well?
+          (ido-grid-mode-prefix ":: "))
+    (apply o args)))
+
+(advice-add 'projectile-find-file :around #'ido-vertical-please)
 
 (use-package smex)
 (smex-initialize)
@@ -760,10 +773,16 @@ which is defined in `smart-compile-alist'."
            ("C-c tw" . (lambda ()
                               (interactive)
                               (disable-all-themes)
-                              (face-remap-add-relative 'neo-dir-link-face '(:inherit default))
-                              (face-remap-add-relative 'neo-root-dir-face '(:inherit default))
-                              (face-remap-add-relative 'neo-expand-btn-face '(:inherit default))
-                              (face-remap-add-relative 'org-hide '(:inherit default))
+                              (set-face-attribute 'neo-dir-link-face nil
+                                                  :foreground "#0000FF")
+                              (set-face-attribute 'neo-file-link-face nil
+                                                  :foreground "#BA36A5")
+                              (set-face-attribute 'neo-root-dir-face nil
+                                                  :foreground "#8D8D84")
+                              (set-face-attribute 'neo-expand-btn-face nil
+                                                  :foreground "#000000")
+                              (set-face-attribute 'org-hide nil
+                                                  :foreground "#ffffff")
                               (face-remap-add-relative 'markdown-code-face '(:inherit default))                           
                               (set-face-attribute 'markdown-code-face nil                                                
                                                   :inherit ))))
