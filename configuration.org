@@ -215,19 +215,20 @@ This ensures custom-set variables and faces land in their cozy home without any 
 *** ido-grid-mode
 [[https://github.com/larkery/ido-grid-mode.el#making-a-vertical-list-sometimes][Ido-grid-mode: making a vertical list sometimes]]
 #+BEGIN_SRC emacs-lisp
-      (use-package ido-grid-mode
-        :config
-        (setq ido-grid-mode-min-rows 9
-              ido-grid-mode-max-rows 9))
+  (use-package ido-grid-mode
+    :config
+    (ido-grid-mode 1)
+    (setq ido-grid-mode-min-rows 9
+          ido-grid-mode-max-rows 9))
 
-      (defun ido-vertical-please (o &rest args)
-        (let ((ido-grid-mode-max-columns 1)
-                (ido-grid-mode-start-collapsed nil) ;; pop up tall at the start
-                ;; why not have a different prefix as well?
-                (ido-grid-mode-prefix ":: "))
-          (apply o args)))
+  (defun ido-vertical-please (o &rest args)
+    (let ((ido-grid-mode-max-columns 1)
+            (ido-grid-mode-start-collapsed nil) ;; pop up tall at the start
+            ;; why not have a different prefix as well?
+            (ido-grid-mode-prefix ":: "))
+      (apply o args)))
 
-      (advice-add 'projectile-find-file :around #'ido-vertical-please)
+  (advice-add 'projectile-find-file :around #'ido-vertical-please)
 #+END_SRC
 ** Smex auto-completion                                           :shortcut:
 #+BEGIN_SRC emacs-lisp

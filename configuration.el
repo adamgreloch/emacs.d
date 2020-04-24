@@ -127,7 +127,9 @@
 
 (remove-hook 'dashbord-mode elcord-mode t)
 
-(use-package which-key)
+(use-package which-key
+  :config
+  (setq which-key-side-window-max-height 0.5))
 (which-key-mode)
 
 (use-package projectile
@@ -149,12 +151,13 @@
 ;;   :config
 ;;   (ido-vertical-mode 1))
 
-(use-package ido-grid-mode)
+(use-package ido-grid-mode
+  :config
+  (setq ido-grid-mode-min-rows 9
+        ido-grid-mode-max-rows 9))
 
 (defun ido-vertical-please (o &rest args)
   (let ((ido-grid-mode-max-columns 1)
-        (ido-grid-mode-max-rows 15) ;; bigger list than usual
-          (ido-grid-mode-min-rows 1) ;; let it shrink
           (ido-grid-mode-start-collapsed nil) ;; pop up tall at the start
           ;; why not have a different prefix as well?
           (ido-grid-mode-prefix ":: "))
