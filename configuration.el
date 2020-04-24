@@ -12,11 +12,28 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
-(set-language-environment "UTF-8")
-
-(setq auto-save-default nil)
-(setq make-backup-files nil)
+(setq backup-by-copying t      
+      backup-directory-alist '(("." . "~/.emacs-saves/"))
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      vc-make-backup-files t
+      version-control t)
+(setq auto-save-file-name-transforms
+      `((".*" "~/.emacs-saves/" t)))
 (setq create-lockfiles nil)
+
+(message "Deleting old backup files...")
+(let ((week (* 60 60 24 7))
+      (current (float-time (current-time))))
+  (dolist (file (directory-files temporary-file-directory t))
+    (when (and (backup-file-name-p file)
+               (> (- current (float-time (fifth (file-attributes file))))
+                  week))
+      (message "%s" file)
+      (delete-file file))))
+
+(set-language-environment "UTF-8")
 
 (tooltip-mode -1)
 
@@ -96,8 +113,19 @@
 
 (use-package magit)
 
+(defun mu-magit-kill-buffers ()
+  "Restore window configuration and kill all Magit buffers."
+  (interactive)
+  (let ((buffers (magit-mode-get-buffers)))
+    (magit-restore-window-configuration)
+    (mapc #'kill-buffer buffers)))
+
+(bind-key "q" #'mu-magit-kill-buffers magit-status-mode-map)
+
 (use-package elcord)
 (elcord-mode)
+
+(remove-hook 'dashbord-mode elcord-mode t)
 
 (use-package which-key)
 (which-key-mode)
@@ -337,6 +365,15 @@
 (use-package org-journal
 :config
 (setq org-journal-dir "~/Dropbox/journal/"))
+
+(defun org-journal-save-entry-and-exit()
+  "Simple convenience function.
+  Saves the buffer of the current day's entry and kills the window
+  Similar to org-capture like behavior"
+  (interactive)
+  (save-buffer)
+  (kill-buffer-and-window))
+(define-key org-journal-mode-map (kbd "C-x C-s") 'org-journal-save-entry-and-exit)
 
 (use-package rainbow-delimiters)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
@@ -634,6 +671,11 @@ which is defined in `smart-compile-alist'."
 
 (use-package rainbow-mode)
 
+(defun disable-all-themes ()
+  "disable all active themes."
+  (dolist (i custom-enabled-themes)
+    (disable-theme i)))
+
 (defvar d-neo-dir-root '"#9989cc")
 (defvar d-neo-file-link '"#dbdde0")
 (defvar d-neo-expand-btn '"#d07346")
@@ -672,44 +714,54 @@ which is defined in `smart-compile-alist'."
 		    :foreground d-org-hide)
 
 (bind-keys ("C-c tl" . (lambda ()
- 			 (interactive)
- 			 (load-theme 'base16-gruvbox-light-hard)
- 			 (set-face-attribute 'neo-dir-link-face nil
-					     :foreground l-neo-dir-root)
+                         (interactive)
+                         (load-theme 'base16-gruvbox-light-hard)
+                         (set-face-attribute 'neo-dir-link-face nil
+                                             :foreground l-neo-dir-root)
 
-			 (set-face-attribute 'neo-file-link-face nil
-					     :foreground l-neo-file-link)
-			 (set-face-attribute 'neo-root-dir-face nil
-					     :foreground l-neo-dir-root
-					     :weight 'bold)
-			 (set-face-attribute 'neo-expand-btn-face nil
-					     :foreground l-neo-expand-btn
-					     :weight 'bold)
-			 (set-face-attribute 'org-hide nil
-					     :foreground l-org-hide)
-			 (set-face-attribute 'markdown-code-face nil
-					     :background l-markdown-code-bg
-					     :inherit 'nil)))
+                         (set-face-attribute 'neo-file-link-face nil
+                                             :foreground l-neo-file-link)
+                         (set-face-attribute 'neo-root-dir-face nil
+                                             :foreground l-neo-dir-root
+                                             :weight 'bold)
+                         (set-face-attribute 'neo-expand-btn-face nil
+                                             :foreground l-neo-expand-btn
+                                             :weight 'bold)
+                         (set-face-attribute 'org-hide nil
+                                             :foreground l-org-hide)
+                         (set-face-attribute 'markdown-code-face nil
+                                             :background l-markdown-code-bg
+                                             :inherit 'nil)))
            ("C-c td" . (lambda ()
-			 (interactive)
-			 (load-theme 'base16-phd)
-			 (set-face-attribute 'neo-dir-link-face nil
-					     :foreground d-neo-dir-root)
-			 
-			 (set-face-attribute 'neo-file-link-face nil
-					     :foreground d-neo-file-link)
-			 
-			 (set-face-attribute 'neo-root-dir-face nil
-					     :foreground d-neo-dir-root
-					     :weight 'bold)
-			 (set-face-attribute 'neo-expand-btn-face nil
-					     :foreground d-neo-expand-btn
-					     :weight 'bold)
-			 (set-face-attribute 'org-hide nil
-					     :foreground d-org-hide)
-			 (set-face-attribute 'markdown-code-face nil
-					     :background d-markdown-code-bg
-					     :inherit 'nil))))
+                         (interactive)
+                         (load-theme 'base16-phd)
+                         (set-face-attribute 'neo-dir-link-face nil
+                                             :foreground d-neo-dir-root)
+
+                         (set-face-attribute 'neo-file-link-face nil
+                                             :foreground d-neo-file-link)
+
+                         (set-face-attribute 'neo-root-dir-face nil
+                                             :foreground d-neo-dir-root
+                                             :weight 'bold)
+                         (set-face-attribute 'neo-expand-btn-face nil
+                                             :foreground d-neo-expand-btn
+                                             :weight 'bold)
+                         (set-face-attribute 'org-hide nil
+                                             :foreground d-org-hide)
+                         (set-face-attribute 'markdown-code-face nil
+                                             :background d-markdown-code-bg
+                                             :inherit 'nil)))
+           ("C-c tw" . (lambda ()
+                              (interactive)
+                              (disable-all-themes)
+                              (face-remap-add-relative 'neo-dir-link-face '(:inherit default))
+                              (face-remap-add-relative 'neo-root-dir-face '(:inherit default))
+                              (face-remap-add-relative 'neo-expand-btn-face '(:inherit default))
+                              (face-remap-add-relative 'org-hide '(:inherit default))
+                              (face-remap-add-relative 'markdown-code-face '(:inherit default))                           
+                              (set-face-attribute 'markdown-code-face nil                                                
+                                                  :inherit ))))
 
 (setq w32-pass-apps-to-system nil)
 (setq w32-apps-modifier 'super)

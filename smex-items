@@ -1,26 +1,32 @@
 
 ;; ----- smex-history -----
 (
- org-journal-mode
- toggle-word-wrap
- toggle-truncate-lines
- eval-buffer
- rainbow-mode
+ projectile-discover-projects-in-directory
  darkroom-tentative-mode
- load-theme
+ buffer-menu
+ elcord-mode
+ org-journal-previous-entry
+ customize-variable
+ rainbow-mode
 )
 
 ;; ----- smex-data -----
 (
  (projectile-invalidate-cache . 1)
- (darkroom-tentative-mode . 5)
+ (darkroom-tentative-mode . 7)
  (darkroom-decrease-margins . 1)
  (package-install . 1)
  (package-delete . 3)
  (load-theme . 2)
  (rainbow-mode . 5)
- (eval-buffer . 1)
+ (eval-buffer . 2)
  (toggle-truncate-lines . 2)
  (toggle-word-wrap . 2)
  (org-journal-mode . 2)
+ (customize-variable . 1)
+ (org-journal-previous-entry . 1)
+ (org-journal-open-previous-entry . 1)
+ (elcord-mode . 4)
+ (buffer-menu . 1)
+ (projectile-discover-projects-in-directory . 1)
 )

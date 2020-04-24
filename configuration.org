@@ -1,5 +1,7 @@
 #+TITLE: Emacs configuration
 
+* TODO work on backups
+
 * Maintenance
 ** TODO finish throwing and documenting stuff
 ** TODO make =smart-compile= buffer somehow r/w for data input
@@ -29,16 +31,36 @@ This ensures custom-set variables and faces land in their cozy home without any 
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 #+END_SRC
+** Backups
+*** Make auto-saves and backups in =~/.emacs-saves/= dir
+#+BEGIN_SRC emacs-lisp
+(setq backup-by-copying t      
+      backup-directory-alist '(("." . "~/.emacs-saves/"))
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      vc-make-backup-files t
+      version-control t)
+(setq auto-save-file-name-transforms
+      `((".*" "~/.emacs-saves/" t)))
+(setq create-lockfiles nil)
+#+END_SRC
+*** Delete backups week old
+#+BEGIN_SRC emacs-lisp
+(message "Deleting old backup files...")
+(let ((week (* 60 60 24 7))
+      (current (float-time (current-time))))
+  (dolist (file (directory-files temporary-file-directory t))
+    (when (and (backup-file-name-p file)
+               (> (- current (float-time (fifth (file-attributes file))))
+                  week))
+      (message "%s" file)
+      (delete-file file))))
+#+END_SRC
 * Performance settings
 ** set UTF-8 as default
 #+BEGIN_SRC emacs-lisp
 (set-language-environment "UTF-8")
-#+END_SRC
-** stop creating those #auto-save# files
-#+BEGIN_SRC emacs-lisp
-(setq auto-save-default nil)
-(setq make-backup-files nil)
-(setq create-lockfiles nil)
 #+END_SRC
 ** turn off graphical tooltips
 #+BEGIN_SRC emacs-lisp
@@ -141,10 +163,26 @@ This ensures custom-set variables and faces land in their cozy home without any 
 #+BEGIN_SRC emacs-lisp
 (use-package magit)
 #+END_SRC
+*** Magit go away!
+[[https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/][Manuel Uberti - Exterminate Magit buffers]]
+#+BEGIN_SRC emacs-lisp
+(defun mu-magit-kill-buffers ()
+  "Restore window configuration and kill all Magit buffers."
+  (interactive)
+  (let ((buffers (magit-mode-get-buffers)))
+    (magit-restore-window-configuration)
+    (mapc #'kill-buffer buffers)))
+
+(bind-key "q" #'mu-magit-kill-buffers magit-status-mode-map)
+#+END_SRC
 ** Discord integration
 #+BEGIN_SRC emacs-lisp
 (use-package elcord)
 (elcord-mode)
+#+END_SRC
+*** disable when not in use
+#+BEGIN_SRC emacs-lisp
+(remove-hook 'dashbord-mode elcord-mode t)
 #+END_SRC
 ** =which-key=
 #+BEGIN_SRC emacs-lisp
@@ -412,6 +450,17 @@ This ensures custom-set variables and faces land in their cozy home without any 
 (use-package org-journal
 :config
 (setq org-journal-dir "~/Dropbox/journal/"))
+#+END_SRC
+*** Kill journal buffer after saving buffer (By dhruvparamhans)
+#+BEGIN_SRC emacs-lisp
+(defun org-journal-save-entry-and-exit()
+  "Simple convenience function.
+  Saves the buffer of the current day's entry and kills the window
+  Similar to org-capture like behavior"
+  (interactive)
+  (save-buffer)
+  (kill-buffer-and-window))
+(define-key org-journal-mode-map (kbd "C-x C-s") 'org-journal-save-entry-and-exit)
 #+END_SRC
 * Prog modes
 ** General settings
@@ -681,15 +730,21 @@ which is defined in `smart-compile-alist'."
  (add-hook 'text-mode-hook 'visual-line-mode)
  #+END_SRC
 ** markdown-mode
+[[https://github.com/syl20bnr/spacemacs/issues/11806][If markdown failed with exit code 1]]
 #+BEGIN_SRC emacs-lisp
-(use-package markdown-mode)
+  (use-package vmd-mode)
 
-(use-package darkroom)
+  (use-package markdown-mode
+    :config
+    (setq markdown-live-preview-engine 'vmd
+          markdown-command "vmd")
 
-(defun my-markdown-mode-hook ()
-  (visual-line-mode 1)
-  (darkroom-tentative-mode 1))
-(add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
+  (use-package darkroom)
+
+  (defun my-markdown-mode-hook ()
+    (visual-line-mode 1)
+    (darkroom-tentative-mode 1))
+  (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
 #+END_SRC
 * Miscellaneous user interface tweaks
 ** dashboard config
@@ -748,6 +803,13 @@ Will try working without line-numbers for a while
 (use-package rainbow-mode)
 #+END_SRC
 * Theme
+** Function to disable all themes
+#+BEGIN_SRC emacs-lisp
+(defun disable-all-themes ()
+  "disable all active themes."
+  (dolist (i custom-enabled-themes)
+    (disable-theme i)))
+#+END_SRC
 ** Custom colors for light/dark theme
 #+BEGIN_SRC emacs-lisp
 (defvar d-neo-dir-root '"#9989cc")
@@ -793,45 +855,55 @@ Will try working without line-numbers for a while
 #+END_SRC
 ** Light/dark theme key-switch (=base-gruvbox-light-hard= as a light theme) :shortcut:
 #+BEGIN_SRC emacs-lisp
-(bind-keys ("C-c tl" . (lambda ()
- 			 (interactive)
- 			 (load-theme 'base16-gruvbox-light-hard)
- 			 (set-face-attribute 'neo-dir-link-face nil
-					     :foreground l-neo-dir-root)
+  (bind-keys ("C-c tl" . (lambda ()
+                           (interactive)
+                           (load-theme 'base16-gruvbox-light-hard)
+                           (set-face-attribute 'neo-dir-link-face nil
+                                               :foreground l-neo-dir-root)
 
-			 (set-face-attribute 'neo-file-link-face nil
-					     :foreground l-neo-file-link)
-			 (set-face-attribute 'neo-root-dir-face nil
-					     :foreground l-neo-dir-root
-					     :weight 'bold)
-			 (set-face-attribute 'neo-expand-btn-face nil
-					     :foreground l-neo-expand-btn
-					     :weight 'bold)
-			 (set-face-attribute 'org-hide nil
-					     :foreground l-org-hide)
-			 (set-face-attribute 'markdown-code-face nil
-					     :background l-markdown-code-bg
-					     :inherit 'nil)))
-           ("C-c td" . (lambda ()
-			 (interactive)
-			 (load-theme 'base16-phd)
-			 (set-face-attribute 'neo-dir-link-face nil
-					     :foreground d-neo-dir-root)
-			 
-			 (set-face-attribute 'neo-file-link-face nil
-					     :foreground d-neo-file-link)
-			 
-			 (set-face-attribute 'neo-root-dir-face nil
-					     :foreground d-neo-dir-root
-					     :weight 'bold)
-			 (set-face-attribute 'neo-expand-btn-face nil
-					     :foreground d-neo-expand-btn
-					     :weight 'bold)
-			 (set-face-attribute 'org-hide nil
-					     :foreground d-org-hide)
-			 (set-face-attribute 'markdown-code-face nil
-					     :background d-markdown-code-bg
-					     :inherit 'nil))))
+                           (set-face-attribute 'neo-file-link-face nil
+                                               :foreground l-neo-file-link)
+                           (set-face-attribute 'neo-root-dir-face nil
+                                               :foreground l-neo-dir-root
+                                               :weight 'bold)
+                           (set-face-attribute 'neo-expand-btn-face nil
+                                               :foreground l-neo-expand-btn
+                                               :weight 'bold)
+                           (set-face-attribute 'org-hide nil
+                                               :foreground l-org-hide)
+                           (set-face-attribute 'markdown-code-face nil
+                                               :background l-markdown-code-bg
+                                               :inherit 'nil)))
+             ("C-c td" . (lambda ()
+                           (interactive)
+                           (load-theme 'base16-phd)
+                           (set-face-attribute 'neo-dir-link-face nil
+                                               :foreground d-neo-dir-root)
+
+                           (set-face-attribute 'neo-file-link-face nil
+                                               :foreground d-neo-file-link)
+
+                           (set-face-attribute 'neo-root-dir-face nil
+                                               :foreground d-neo-dir-root
+                                               :weight 'bold)
+                           (set-face-attribute 'neo-expand-btn-face nil
+                                               :foreground d-neo-expand-btn
+                                               :weight 'bold)
+                           (set-face-attribute 'org-hide nil
+                                               :foreground d-org-hide)
+                           (set-face-attribute 'markdown-code-face nil
+                                               :background d-markdown-code-bg
+                                               :inherit 'nil)))
+             ("C-c tw" . (lambda ()
+                                (interactive)
+                                (disable-all-themes)
+                                (face-remap-add-relative 'neo-dir-link-face '(:inherit default))
+                                (face-remap-add-relative 'neo-root-dir-face '(:inherit default))
+                                (face-remap-add-relative 'neo-expand-btn-face '(:inherit default))
+                                (face-remap-add-relative 'org-hide '(:inherit default))
+                                (face-remap-add-relative 'markdown-code-face '(:inherit default))                           
+                                (set-face-attribute 'markdown-code-face nil                                                
+                                                    :inherit ))))
 #+END_SRC
 * Windows-specific settings
 #+BEGIN_SRC emacs-lisp

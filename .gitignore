@@ -70,3 +70,4 @@ server/
 bookmarks
 .local-settings.el
 auto/
+org-journal.cache
