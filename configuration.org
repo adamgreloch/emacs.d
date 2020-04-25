@@ -16,8 +16,6 @@
 ** Initialize server
 #+BEGIN_SRC emacs-lisp
 (require 'server)
-(or (server-running-p)
-     (server-start))
 #+END_SRC
 ** Set custom-file
 This ensures custom-set variables and faces land in their cozy home without any issues
@@ -65,6 +63,12 @@ This ensures custom-set variables and faces land in their cozy home without any 
 ** turn off graphical tooltips
 #+BEGIN_SRC emacs-lisp
 (tooltip-mode -1)
+#+END_SRC
+** profile dotfiles
+#+BEGIN_SRC emacs-lisp
+  (use-package esup
+    :pin melpa
+    :commands (esup))
 #+END_SRC
 * Navigation
 ** neotree                                                        :shortcut:
@@ -141,11 +145,21 @@ This ensures custom-set variables and faces land in their cozy home without any 
 * VC/project management/IDO
 ** Magit
 #+BEGIN_SRC emacs-lisp
-(use-package magit)
+    (use-package magit
+      :bind ("C-x g" . magit-status)
+      :init
+      (defun mu-magit-kill-buffers ()
+	"Restore window configuration and kill all Magit buffers."
+	(interactive)
+	(let ((buffers (magit-mode-get-buffers)))
+	  (magit-restore-window-configuration)
+	  (mapc #'kill-buffer buffers)))
+      :config
+      (bind-key "q" #'mu-magit-kill-buffers magit-status-mode-map))
 #+END_SRC
 *** Magit go away!
 [[https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/][Manuel Uberti - Exterminate Magit buffers]]
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC disabled
 (defun mu-magit-kill-buffers ()
   "Restore window configuration and kill all Magit buffers."
   (interactive)
@@ -239,9 +253,9 @@ This ensures custom-set variables and faces land in their cozy home without any 
 * Org
 ** Fundamental configuration, basic shortcuts                      :shortcut:
 #+BEGIN_SRC emacs-lisp
-(use-package org)
-
-(global-set-key (kbd "C-x C-a") 'org-agenda)
+  (use-package org
+    :init
+    (global-set-key (kbd "C-x C-a") 'org-agenda))  
 #+END_SRC
 ** Global indentation
 #+BEGIN_SRC emacs-lisp
@@ -521,265 +535,43 @@ Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-gener
 (define-key org-journal-mode-map (kbd "C-x C-s") 'org-journal-save-entry-and-exit)
 #+END_SRC
 * Prog modes
-** General settings
+** general settings
 *** rainbow brackets
  #+BEGIN_SRC emacs-lisp
  (use-package rainbow-delimiters)
  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
  #+END_SRC
 ** smart-compile
-*** whole plugin code (power-noob-move)
 #+BEGIN_SRC emacs-lisp
-;; Copyright (C) 1998-2020  by Seiji Zenitani
-
-;; Author: Seiji Zenitani <zenitani@mac.com>
-;; Version: 20200322
-;; Keywords: tools, unix
-;; Created: 1998-12-27
-;; Compatibility: Emacs 21 or later
-;; URL(en): https://github.com/zenitani/elisp/blob/master/smart-compile.el
-;; URL(jp): http://th.nao.ac.jp/MEMBER/zenitani/elisp-j.html#smart-compile
-
-;;; Commentary:
-
-;; This package provides `smart-compile' function.
-;; You can associate a particular file with a particular compile function,
-;; by editing `smart-compile-alist'.
-;;
-;; To use this package, add these lines to your .emacs file:
-;;     (require 'smart-compile)
-;;
-;; Note that it requires emacs 21 or later.
-
-;;; Code:
-
-(defgroup smart-compile nil
-  "An interface to `compile'."
-  :group 'processes
-  :prefix "smart-compile")
-
-(defcustom smart-compile-alist '(
-				 ("\\.pas\\'" . "fpc %f && %n.exe")
-  (emacs-lisp-mode    . (emacs-lisp-byte-compile))
-  (html-mode          . (browse-url-of-buffer))
-  (nxhtml-mode        . (browse-url-of-buffer))
-  (html-helper-mode   . (browse-url-of-buffer))
-  (octave-mode        . (run-octave))
-  ("\\.c\\'"          . "gcc -O2 %f -lm -o %n")
-;;  ("\\.c\\'"          . "gcc -O2 %f -lm -o %n && ./%n") ;; unix, macOS
-;;  ("\\.c\\'"          . "gcc -O2 %f -lm -o %n && %n") ;; win
-  ("\\.[Cc]+[Pp]*\\'" . "g++ -O2 %f -lm -o %n")
-  ("\\.cron\\(tab\\)?\\'" . "crontab %f")
-  ("\\.cu\\'"         . "nvcc %f -o %n")
-  ("\\.cuf\\'"        . "pgfortran %f -o %n")
-  ("\\.[Ff]\\'"       . "gfortran %f -o %n")
-  ("\\.[Ff]90\\'"     . "gfortran %f -o %n")
-  ("\\.hs\\'"         . "ghc %f -o %n")
-  ("\\.java\\'"       . "javac %f")
-  ("\\.jl\\'"         . "julia %f")
-  ("\\.m\\'"          . "gcc -O2 %f -lobjc -lpthread -o %n")
-  ("\\.mp\\'"         . "mptopdf %f")
-  ("\\.php\\'"        . "php -l %f")
-  ("\\.pl\\'"         . "perl %f")
-  ("\\.py\\'"         . "python3 %f")
-  ("\\.rb\\'"         . "ruby %f")
-  ("Rakefile\\'"      . "rake")
-  ("Gemfile\\'"       . "bundle install")
-  ("\\.tex\\'"        . (tex-file))
-  ("\\.texi\\'"       . "makeinfo %f")
-;;  ("\\.pl\\'"         . "perl -cw %f") ; syntax check
-;;  ("\\.rb\\'"         . "ruby -cw %f") ; syntax check
-)  "Alist of filename patterns vs corresponding format control strings.
-Each element looks like (REGEXP . STRING) or (MAJOR-MODE . STRING).
-Visiting a file whose name matches REGEXP specifies STRING as the
-format control string.  Instead of REGEXP, MAJOR-MODE can also be used.
-The compilation command will be generated from STRING.
-The following %-sequences will be replaced by:
-
-  %F  absolute pathname            ( /usr/local/bin/netscape.bin )
-  %f  file name without directory  ( netscape.bin )
-  %n  file name without extension  ( netscape )
-  %e  extension of file name       ( bin )
-
-  %o  value of `smart-compile-option-string'  ( \"user-defined\" ).
-
-If the second item of the alist element is an emacs-lisp FUNCTION,
-evaluate FUNCTION instead of running a compilation command.
-"
-   :type '(repeat
-           (cons
-            (choice
-             (regexp :tag "Filename pattern")
-             (function :tag "Major-mode"))
-            (choice
-             (string :tag "Compilation command")
-             (sexp :tag "Lisp expression"))))
-   :group 'smart-compile)
-(put 'smart-compile-alist 'risky-local-variable t)
-
-(defconst smart-compile-replace-alist '(
-  ("%F" . (buffer-file-name))
-  ("%f" . (file-name-nondirectory (buffer-file-name)))
-  ("%n" . (file-name-sans-extension
-           (file-name-nondirectory (buffer-file-name))))
-  ("%e" . (or (file-name-extension (buffer-file-name)) ""))
-  ("%o" . smart-compile-option-string)
-;;   ("%U" . (user-login-name))
-  )
-  "Alist of %-sequences for format control strings in `smart-compile-alist'.")
-(put 'smart-compile-replace-alist 'risky-local-variable t)
-
-(defvar smart-compile-check-makefile t)
-(make-variable-buffer-local 'smart-compile-check-makefile)
-
-(defcustom smart-compile-make-program "make "
-  "The command by which to invoke the make program."
-  :type 'string
-  :group 'smart-compile)
-
-(defcustom smart-compile-option-string ""
-  "The option string that replaces %o.  The default is empty."
-  :type 'string
-  :group 'smart-compile)
-
-
-;;;###autoload
-(defun smart-compile (&optional arg)
-  "An interface to `compile'.
-It calls `compile' or other compile function,
-which is defined in `smart-compile-alist'."
-  (interactive "p")
-  (let ((name (buffer-file-name))
-        (not-yet t))
-    
-    (if (not name)(error "cannot get filename."))
-;;     (message (number-to-string arg))
-
-    (cond
-
-     ;; local command
-     ;; The prefix 4 (C-u M-x smart-compile) skips this section
-     ;; in order to re-generate the compile-command
-     ((and (not (= arg 4)) ; C-u M-x smart-compile
-           (local-variable-p 'compile-command)
-           compile-command)
-      (call-interactively 'compile)
-      (setq not-yet nil)
-      )
-
-     ;; make?
-     ((and smart-compile-check-makefile
-           (or (file-readable-p "Makefile")
-               (file-readable-p "makefile")))
-      (if (y-or-n-p "Makefile is found.  Try 'make'? ")
-          (progn
-            (set (make-local-variable 'compile-command) "make ")
-            (call-interactively 'compile)
-            (setq not-yet nil)
-            )
-        (setq smart-compile-check-makefile nil)))
-
-     ) ;; end of (cond ...)
-
-    ;; compile
-    (let( (alist smart-compile-alist) 
-          (case-fold-search nil)
-          (function nil) )
-      (while (and alist not-yet)
-        (if (or
-             (and (symbolp (caar alist))
-                  (eq (caar alist) major-mode))
-             (and (stringp (caar alist))
-                  (string-match (caar alist) name))
-             )
-            (progn
-              (setq function (cdar alist))
-              (if (stringp function)
-                  (progn
-                    (set (make-local-variable 'compile-command)
-                         (smart-compile-string function))
-                    (call-interactively 'compile)
-                    )
-                (if (listp function)
-                    (eval function)
-                    ))
-              (setq alist nil)
-              (setq not-yet nil)
-              )
-          (setq alist (cdr alist)) )
-        ))
-
-    ;; If compile-command is not defined and the contents begins with "#!",
-    ;; set compile-command to filename.
-    (if (and not-yet
-             (not (memq system-type '(windows-nt ms-dos)))
-             (not (string-match "/\\.[^/]+$" name))
-             (not
-              (and (local-variable-p 'compile-command)
-                   compile-command))
-             )
-        (save-restriction
-          (widen)
-          (if (equal "#!" (buffer-substring 1 (min 3 (point-max))))
-              (set (make-local-variable 'compile-command) name)
-            ))
-      )
-    
-    ;; compile
-    (if not-yet (call-interactively 'compile) )
-
-    ))
-
-(defun smart-compile-string (format-string)
-  "Document forthcoming..."
-  (if (and (boundp 'buffer-file-name)
-           (stringp buffer-file-name))
-      (let ((rlist smart-compile-replace-alist)
-            (case-fold-search nil))
-        (while rlist
-          (while (string-match (caar rlist) format-string)
-            (setq format-string
-                  (replace-match
-                   (eval (cdar rlist)) t nil format-string)))
-          (setq rlist (cdr rlist))
-          )
-        ))
-  format-string)
-#+END_SRC
-**** TODO do something about this stupidity
-
-*** add shortcut to smart-compile                                  :shortcut:
-#+BEGIN_SRC emacs-lisp
-(add-hook 'prog-mode-hook
-	  (lambda ()
-		 (local-set-key (kbd "C-x c") 'smart-compile)))
+  (use-package smart-compile
+    :config
+    (add-hook 'prog-mode-hook
+            (lambda ()
+              (local-set-key (kbd "C-x c") 'smart-compile)))
+    (add-to-list 'smart-compile-alist (list (cons "\\.pas\\'" "fpc %f && %n.exe"))))
 #+END_SRC
 ** web-mode
 #+BEGIN_SRC emacs-lisp
-(use-package rjsx-mode)
+  (use-package rjsx-mode
+    :defer t
+    :mode ("\\.js\\'" . rjsx-mode))
 
-(add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
+  (use-package flycheck
+    :defer t
+    :hook (rjsx-mode)
+    :config
+    (setq-default flycheck-disabled-checkers
+                  (append flycheck-disabled-checkers
+                          '(javascript-jshint json-jsonlist)))
+    (setq flycheck-check-syntax-automatically '(save mode-enable))
+    (flycheck-add-mode 'javascript-eslint 'web-mode))
 
-(use-package flycheck)
+  (use-package add-node-modules-path
+    :hook (flycheck-mode))
 
-(setq-default flycheck-disabled-checkers
-              (append flycheck-disabled-checkers
-                      '(javascript-jshint json-jsonlist)))
-
-(setq flycheck-check-syntax-automatically '(save mode-enable))
-
-;; Enable eslint checker for web-mode
-(flycheck-add-mode 'javascript-eslint 'web-mode)
-
-;; Enable flycheck globally
-(add-hook 'prog-mode-hook #'flycheck-mode)
-
-(use-package add-node-modules-path)
-
-(add-hook 'flycheck-mode-hook 'add-node-modules-path)
-
-(use-package company)
-(add-hook 'prog-mode-hook 'company-mode)
+  (use-package company
+    :init
+    (add-hook 'prog-mode-hook 'company-mode))
 #+END_SRC
 * Text modes
 ** General settings
@@ -812,8 +604,7 @@ which is defined in `smart-compile-alist'."
   :config
   (setq dashboard-items '((recents  . 10)
   (bookmarks . 5)
-  (projects . 5)
-  (agenda . 5)))
+  (projects . 5)))
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
   (setq dashboard-startup-banner '1)
   (dashboard-setup-startup-hook))
