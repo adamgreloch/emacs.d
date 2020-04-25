@@ -250,12 +250,20 @@ This ensures custom-set variables and faces land in their cozy home without any 
 #+BEGIN_SRC emacs-lisp
   (use-package helm)
 #+END_SRC
+* Productivity
+** wakatime time tracking
+#+BEGIN_SRC emacs-lisp
+  (use-package wakatime-mode
+    :config
+    (global-wakatime-mode))
+#+END_SRC
 * Org
 ** Fundamental configuration, basic shortcuts                      :shortcut:
 #+BEGIN_SRC emacs-lisp
   (use-package org
+    :defer 2
     :init
-    (global-set-key (kbd "C-x C-a") 'org-agenda))  
+    (global-set-key (kbd "C-x C-a") 'org-agenda))
 #+END_SRC
 ** Global indentation
 #+BEGIN_SRC emacs-lisp
