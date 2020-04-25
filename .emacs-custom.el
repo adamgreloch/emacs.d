@@ -48,11 +48,11 @@
  '(neo-window-width 30)
  '(org-agenda-files
    (quote
-    ("~/.emacs.d/configuration.org" "~/Dropbox/org/casual.org" "~/Dropbox/org/school.org")))
+    ("~/.emacs.d/configuration.org" "~/Dropbox/org/school.org" "~/Dropbox/org/freetime.org")))
  '(org-journal-file-format "%Y%m%d.org")
  '(package-selected-packages
    (quote
-    (ido-grid-mode vmd-mode org-journal smex org-plus-contrib org-mode elcord rainbow-mode ido-vertical-mode ivy diminish flx-ido base16-theme which-key awesome-tab rjsx-mode company shell-pop auctex magit add-node-modules-path flycheck neotree ibuffer-projectile rainbow-delimiters ibuffer-sidebar ace-window dashboard dired-sidebar darkroom use-package markdown-mode)))
+    (helm ido-grid-mode vmd-mode org-journal smex org-plus-contrib org-mode elcord rainbow-mode ido-vertical-mode ivy diminish flx-ido base16-theme which-key awesome-tab rjsx-mode company shell-pop auctex magit add-node-modules-path flycheck neotree ibuffer-projectile rainbow-delimiters ibuffer-sidebar ace-window dashboard dired-sidebar darkroom use-package markdown-mode)))
  '(shell-pop-autocd-to-working-dir nil)
  '(shell-pop-shell-type
    (quote

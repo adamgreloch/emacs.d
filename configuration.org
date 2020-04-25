@@ -232,6 +232,10 @@ This ensures custom-set variables and faces land in their cozy home without any 
 
 (set-default 'preview-scale-function 1.3)
 #+END_SRC
+* Helm
+#+BEGIN_SRC emacs-lisp
+  (use-package helm)
+#+END_SRC
 * Org
 ** Fundamental configuration, basic shortcuts                      :shortcut:
 #+BEGIN_SRC emacs-lisp
@@ -295,6 +299,7 @@ This ensures custom-set variables and faces land in their cozy home without any 
   (require 'org-mouse)
 #+END_SRC
 ** Exporting org files
+*** TODO make my templates smarter
 *** export org files to LaTeX with ADMQ-math template
 #+BEGIN_SRC emacs-lisp
 (require 'ox-latex)
@@ -442,12 +447,55 @@ This ensures custom-set variables and faces land in their cozy home without any 
          ("\\subsection{%s}" . "\\subsection*{%s}")
          ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
 #+END_SRC
-*** open export in SumatraPDF
+*** open export in SumatraPDF but open links with default viewer
 #+BEGIN_SRC emacs-lisp
-(eval-after-load "org"
-  '(progn
-     ;; Change .pdf association directly within the alist
-     (setcdr (assoc "\\.pdf\\'" org-file-apps) "SumatraPDF %s")))
+   (eval-after-load "org"
+     '(progn
+         ;; Change .pdf association directly within the alist
+        (setcdr (assoc "\\.pdf\\'" org-file-apps) "SumatraPDF %s")))
+#+END_SRC
+** Define link types
+*** =menu=
+Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-generalized-org-link-with-an-extendable-menu-of-actions/][A generalized org-link with an extendable menu of actions]])
+#+BEGIN_SRC emacs-lisp
+  (defun option-r (link)
+    (start-process "Adobe Reader DC" nil "AcroRd32" link))
+
+  (defun option-s (link)
+    (message "You picked option B for %s" link))
+
+  (defvar menu-funcs
+   '(("a" "Adobe Reader" option-r)
+     ("s" "SumatraPDF" option-s)))
+
+  (defun menu-click (path)
+    (message "Open this PDF with %s"
+     (concat
+      (mapconcat
+       (lambda (tup)
+         (concat "[" (elt tup 0) "]"
+                 (elt tup 1) " "))
+       menu-funcs "")))
+    (setq input (read-char-exclusive))
+    (funcall
+     (elt 
+      (assoc
+       (char-to-string input) menu-funcs)
+      2)
+     path))
+
+  (org-add-link-type
+   "menu"
+   'menu-click)
+#+END_SRC
+*** =pdf=
+#+BEGIN_SRC emacs-lisp
+  (defun pdf-open (path)
+      (start-process "Adobe Reader DC" nil "AcroRd32" path))
+
+    (org-add-link-type
+     "pdf"
+     'pdf-open)
 #+END_SRC
 ** =org-journal= 
 #+BEGIN_SRC emacs-lisp
