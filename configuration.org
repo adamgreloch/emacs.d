@@ -490,12 +490,18 @@ Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-gener
 #+END_SRC
 *** =pdf=
 #+BEGIN_SRC emacs-lisp
-  (defun pdf-open (path)
-      (start-process "Adobe Reader DC" nil "AcroRd32" path))
+  ;; (defun pdf-open (link)
+  ;;     (start-process "Adobe Reader DC" nil "AcroRd32" link))
 
-    (org-add-link-type
-     "pdf"
-     'pdf-open)
+  (defun org-pdf-open (link)
+    "Where page number is 105, the link should look like:
+     [[pdf:/path/to/file.pdf#page=105][My description.]]"
+    (let* ((path+page (split-string link "#page="))
+           (pdf-file (car path+page))
+           (page (car (cdr path+page))))
+      (start-process "Adobe Reader DC" nil "AcroRd32" "/A" (format "page=%s" page) pdf-file)))
+
+  (org-add-link-type "pdf" 'org-pdf-open)
 #+END_SRC
 ** =org-journal= 
 #+BEGIN_SRC emacs-lisp
