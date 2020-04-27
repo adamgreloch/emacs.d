@@ -520,7 +520,7 @@ Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-gener
     (let* ((path+page (split-string link "#page="))
            (pdf-file (car path+page))
            (page (car (cdr path+page))))
-      (start-process "Adobe Reader DC" nil "AcroRd32" "/A" (format "page=%s" page) pdf-file)))
+      (start-process "Adobe Acrobat" nil "Acrobat" "/A" (format "page=%s" page) pdf-file)))
 
   (org-add-link-type "pdf" 'org-pdf-open)
 #+END_SRC
@@ -541,6 +541,11 @@ Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-gener
   (kill-buffer-and-window))
 (define-key org-journal-mode-map (kbd "C-x C-s") 'org-journal-save-entry-and-exit)
 #+END_SRC
+** Src code execution
+#+BEGIN_SRC emacs-lisp
+  (require 'ob-java)
+  (add-to-list 'org-babel-load-languages '(java . t))
+#+END_SRC
 * Prog modes
 ** general settings
 *** rainbow brackets
@@ -548,6 +553,13 @@ Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-gener
  (use-package rainbow-delimiters)
  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
  #+END_SRC
+*** smartparens
+#+BEGIN_SRC emacs-lisp
+  (use-package smartparens
+    :init
+    (add-hook 'prog-mode-hook #'smartparens-mode)
+    (require 'smartparens-config))
+#+END_SRC
 ** smart-compile
 #+BEGIN_SRC emacs-lisp
   (use-package smart-compile
@@ -579,6 +591,62 @@ Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-gener
   (use-package company
     :init
     (add-hook 'prog-mode-hook 'company-mode))
+
+  (use-package company-quickhelp
+    :init
+    (add-hook 'prog-mode-hook 'company-quickhelp-mode))
+
+#+END_SRC
+** java
+#+BEGIN_SRC emacs-lisp
+  (use-package autodisass-java-bytecode
+    :ensure t
+    :defer t)
+
+  (use-package google-c-style
+    :defer t
+    :ensure t
+    :commands
+    (google-set-c-style))
+
+  (use-package meghanada
+    :init
+    (add-hook 'java-mode-hook
+              (lambda ()
+                (google-set-c-style)
+                (google-make-newline-indent)
+                (meghanada-mode t)
+                (smartparens-mode t)
+                (rainbow-delimiters-mode t)
+                (highlight-symbol-mode t)
+                (add-hook 'before-save-hook 'meghanada-code-beautify-before-save)))
+    (cond
+     ((eq system-type 'windows-nt)
+      (setq meghanada-java-path (expand-file-name "bin/java.exe" (getenv "JAVA_HOME")))
+      (setq meghanada-maven-path "mvn.cmd"))
+     (t
+      (setq meghanada-java-path "java")
+      (setq meghanada-maven-path "mvn")))
+    :config
+    (use-package realgud
+      :ensure t)
+    (setq indent-tabs-mode nil)
+    (setq tab-width 2)
+    (setq c-basic-offset 2)
+    (setq meghanada-server-remote-debug t)
+    (setq meghanada-javac-xlint "-Xlint:all,-processing")
+    (add-hook 'meghanada-mode-hook
+              (lambda ()
+                (local-set-key (kbd "C-x r") 'meghanada-exec-main)))
+    :bind
+    (:map meghanada-mode-map
+          ("C-S-t" . meghanada-switch-testcase)
+          ("M-RET" . meghanada-local-variable)
+          ("C-M-." . helm-imenu)
+          ("M-r" . meghanada-reference)
+          ("M-t" . meghanada-typeinfo))
+    :commands
+    (meghanada-mode))
 #+END_SRC
 * Text modes
 ** General settings
@@ -648,11 +716,12 @@ Will try working without line-numbers for a while
 #+END_SRC
 ** =diminish= - hide some obvious minor modes
 #+BEGIN_SRC emacs-lisp
-(use-package diminish
-  :config
-  (diminish 'projectile-mode)
-  (diminish 'which-key-mode)
-  (diminish 'auto-revert-mode))
+  (use-package diminish
+    :config
+    (diminish 'projectile-mode)
+    (diminish 'activity-watch-mode)
+    (diminish 'which-key-mode)
+    (diminish 'auto-revert-mode))
 #+END_SRC
 ** =rainbow-mode=
 #+BEGIN_SRC emacs-lisp
