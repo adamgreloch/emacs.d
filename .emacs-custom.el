@@ -53,18 +53,12 @@
    (quote
     (smartparens company-quickhelp realgud meghanada google-c-style autodisass-java-bytecode activity-watch-mode esup helm ido-grid-mode vmd-mode org-journal smex org-plus-contrib org-mode elcord rainbow-mode ido-vertical-mode ivy diminish flx-ido base16-theme which-key awesome-tab rjsx-mode company shell-pop auctex magit add-node-modules-path flycheck neotree ibuffer-projectile rainbow-delimiters ibuffer-sidebar ace-window dashboard dired-sidebar darkroom use-package markdown-mode)))
  '(shell-pop-autocd-to-working-dir nil)
- '(shell-pop-shell-type
-   (quote
-    ("powershell6" "*powershell6*"
-     (lambda nil
-       (powershell6)))))
  '(shell-pop-window-position "right"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Meslo LG S" :height 110 :weight normal :spacing 90))))
  '(fringe ((t (:background "nil")))))
 
 ;;; .emacs-custom.el ends here

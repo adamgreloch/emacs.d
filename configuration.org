@@ -109,28 +109,7 @@ This ensures custom-set variables and faces land in their cozy home without any 
 (use-package ace-window)
 (global-set-key (kbd "M-o") 'ace-window)
 #+END_SRC
-* Inferior PowerShell6 and shell-pop 
-** define powershell6
-#+BEGIN_SRC emacs-lisp
-(defun powershell6 (&optional buffer)
-  "Launches a PowerShell 6 instance in buffer *powershell6* and switches to it."
-  (interactive)
-  (let ((buffer (or buffer "*powershell6*"))
-	(powershell6-prog "C:\\Program Files\\PowerShell\\6\\pwsh.exe"))
-    (make-comint-in-buffer "shell" "*powershell6*" powershell6-prog)
-    (switch-to-buffer buffer)))
-
-;; make comint-derived modes' like `shell' output and prompt read-only
-(setq comint-prompt-read-only t)
-
-(defun my-comint-preoutput-turn-buffer-read-only (text)
-  (propertize text 'read-only t))
-
-(add-hook 'comint-preoutput-filter-functions 'my-comint-preoutput-turn-buffer-read-only)
-
-(push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
-#+END_SRC
-
+* Shell
 ** set UTF-8 as a default process coding system
 #+BEGIN_SRC emacs-lisp
 (setq default-process-coding-system '(utf-8 . utf-8))
@@ -169,8 +148,8 @@ This ensures custom-set variables and faces land in their cozy home without any 
 
 (bind-key "q" #'mu-magit-kill-buffers magit-status-mode-map)
 #+END_SRC
-** Discord integration
-#+BEGIN_SRC emacs-lisp
+** (disabled) Discord integration
+#+BEGIN_SRC
 (use-package elcord)
 (elcord-mode)
 #+END_SRC
@@ -251,7 +230,7 @@ This ensures custom-set variables and faces land in their cozy home without any 
   (use-package helm)
 #+END_SRC
 * Productivity
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC demacs-lisp
   (use-package activity-watch-mode
     :config
     (global-activity-watch-mode))
@@ -838,8 +817,37 @@ Will try working without line-numbers for a while
 #+END_SRC
 * Windows-specific settings
 #+BEGIN_SRC emacs-lisp
-(setq w32-pass-apps-to-system nil)
-(setq w32-apps-modifier 'super)
+  (if (string-equal system-type "ms-dos")
+      '((setq w32-pass-apps-to-system nil)
+      (setq w32-apps-modifier 'super)
+      (setq default-directory "c:/git/" )))
+#+END_SRC
+** define powershell6 and set it as default for shell-pop
+#+BEGIN_SRC emacs-lisp
+  (if (string-equal system-type "ms-dos")
+  '((defun powershell6 (&optional buffer)
+    "Launches a PowerShell 6 instance in buffer *powershell6* and switches to it."
+    (interactive)
+    (let ((buffer (or buffer "*powershell6*"))
+          (powershell6-prog "C:\\Program Files\\PowerShell\\6\\pwsh.exe"))
+      (make-comint-in-buffer "shell" "*powershell6*" powershell6-prog)
+      (switch-to-buffer buffer)))
 
-(setq default-directory "c:/git/" )
+  ;; make comint-derived modes' like `shell' output and prompt read-only
+  (setq comint-prompt-read-only t)
+
+  (defun my-comint-preoutput-turn-buffer-read-only (text)
+    (propertize text 'read-only t))
+
+  (add-hook 'comint-preoutput-filter-functions 'my-comint-preoutput-turn-buffer-read-only)
+
+  (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)))
+#+END_SRC
+** TODO Move this to config:
+#+BEGIN_SRC emacs-lisp
+  (if (string-equal system-type "ms-dos")
+      '(setq shell-pop-shell-type (quote
+     ("powershell6" "*powershell6*"
+      (lambda nil
+        (powershell6))))))
 #+END_SRC
