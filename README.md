@@ -2,6 +2,8 @@
 
 Repozytorium z moją konfiguracją Emacs'a 
 
+![rel-xkcd](https://imgs.xkcd.com/comics/automation.png)
+
 ## Instalacja
 
 1. Usuń pozostałe foldery konfiguracyjne Emacs'a
