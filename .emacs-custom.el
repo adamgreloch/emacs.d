@@ -47,7 +47,7 @@
  '(neo-window-width 30)
  '(org-agenda-files
    (quote
-    ("~/.emacs.d/configuration.org" "~/Dropbox/org/school.org" "~/Dropbox/org/freetime.org")))
+    ("~/.emacs.d/configuration.org" "~/gdrive/org/school.org" "~/gdrive/org/freetime.org")))
  '(org-journal-file-format "%Y%m%d.org")
  '(package-selected-packages
    (quote

@@ -505,9 +505,9 @@ Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-gener
 #+END_SRC
 ** =org-journal= 
 #+BEGIN_SRC emacs-lisp
-(use-package org-journal
-:config
-(setq org-journal-dir "~/Dropbox/journal/"))
+  (use-package org-journal
+  :config
+  (setq org-journal-dir "~/gdrive/journal/"))
 #+END_SRC
 *** Kill journal buffer after saving buffer (By dhruvparamhans)
 #+BEGIN_SRC emacs-lisp
