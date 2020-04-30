@@ -728,14 +728,23 @@ Will try working without line-numbers for a while
 (defvar l-markdown-code-bg '"#f2eed0")
 #+END_SRC
 ** Load =base16-phd= and set it as a default theme
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC
 (use-package base16-theme
   :ensure t
   :config
   (load-theme 'base16-phd t))
 #+END_SRC
-** Customize neotree, org, markdown-code faces
+** Load =zenburn= and set it as a default theme
 #+BEGIN_SRC emacs-lisp
+  (use-package zenburn-theme
+    :ensure t
+    :config
+    (set-face-attribute 'markdown-code-face nil
+                        :inherit 'nil)
+    (load-theme 'zenburn))
+#+END_SRC
+** Customize neotree, org, markdown-code faces
+#+BEGIN_SRC
 (set-face-attribute 'neo-dir-link-face nil
 		    :foreground d-neo-dir-root)
 
@@ -758,7 +767,7 @@ Will try working without line-numbers for a while
 		    :foreground d-org-hide)
 #+END_SRC
 ** Light/dark theme key-switch (=base-gruvbox-light-hard= as a light theme) :shortcut:
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC
   (bind-keys ("C-c tl" . (lambda ()
                            (interactive)
                            (disable-all-themes)
@@ -819,15 +828,13 @@ Will try working without line-numbers for a while
 #+END_SRC
 * Windows-specific settings
 #+BEGIN_SRC emacs-lisp
-  (if (string-equal system-type "ms-dos")
-      '((setq w32-pass-apps-to-system nil)
-      (setq w32-apps-modifier 'super)
-      (setq default-directory "c:/git/" )))
+  (setq w32-pass-apps-to-system nil)
+  (setq w32-apps-modifier 'super)
+  (setq default-directory "c:/git/" )
 #+END_SRC
 ** define powershell6 and set it as default for shell-pop
 #+BEGIN_SRC emacs-lisp
-  (if (string-equal system-type "ms-dos")
-  '((defun powershell6 (&optional buffer)
+  (defun powershell6 (&optional buffer)
     "Launches a PowerShell 6 instance in buffer *powershell6* and switches to it."
     (interactive)
     (let ((buffer (or buffer "*powershell6*"))
@@ -843,7 +850,7 @@ Will try working without line-numbers for a while
 
   (add-hook 'comint-preoutput-filter-functions 'my-comint-preoutput-turn-buffer-read-only)
 
-  (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)))
+  (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
 #+END_SRC
 ** TODO Move this to config:
 #+BEGIN_SRC emacs-lisp
