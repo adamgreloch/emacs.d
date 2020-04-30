@@ -166,24 +166,24 @@ This ensures custom-set variables and faces land in their cozy home without any 
 #+END_SRC
 ** Projectile and IDO
 #+BEGIN_SRC emacs-lisp
-  (use-package projectile
-    :config
-    (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-    (projectile-mode +1))
+    (use-package projectile
+      :config
+      (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+      (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+      (projectile-mode +1))
 
-  (use-package flx-ido
-    :config
-    (ido-mode 1)
-    (ido-everywhere 1)
-    (flx-ido-mode 1)
-    ;; disable ido faces to see flx highlights.
-    (setq ido-enable-flex-matching t)
-    (setq ido-use-faces nil))
+    (use-package flx-ido
+      :config
+      (ido-mode 1)
+      (ido-everywhere 1)
+      (flx-ido-mode 1)
+      ;; disable ido faces to see flx highlights.
+      (setq ido-enable-flex-matching t)
+      (setq ido-use-faces nil))
 
-  ;; (use-package ido-vertical-mode
-  ;;   :config
-  ;;   (ido-vertical-mode 1))
+    ;; (use-package ido-vertical-mode
+    ;;   :config
+    ;;   (ido-vertical-mode 1))
 #+END_SRC
 *** ido-grid-mode
 [[https://github.com/larkery/ido-grid-mode.el#making-a-vertical-list-sometimes][Ido-grid-mode: making a vertical list sometimes]]
@@ -218,6 +218,7 @@ This ensures custom-set variables and faces land in their cozy home without any 
 (use-package latex
   :defer t
   :ensure auctex
+
   :config
   (setq font-latex-fontify-script nil)
   (setq font-latex-fontify-sectioning 'color)
@@ -230,23 +231,22 @@ This ensures custom-set variables and faces land in their cozy home without any 
   (use-package helm)
 #+END_SRC
 * Productivity
-#+BEGIN_SRC demacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package activity-watch-mode
     :config
     (global-activity-watch-mode))
 #+END_SRC
 * Org
 ** Fundamental configuration, basic shortcuts                      :shortcut:
+[[https://emacs.stackexchange.com/a/22552][Diminish org-indent-mode - Emacs Stack Exchange]]
 #+BEGIN_SRC emacs-lisp
   (use-package org
-    :defer 2
     :init
-    (global-set-key (kbd "C-x C-a") 'org-agenda))
-#+END_SRC
-** Global indentation
-#+BEGIN_SRC emacs-lisp
-(setq org-startup-indented 't)
-(setq org-hide-leading-stars 't)
+    (global-set-key (kbd "C-x C-a") 'org-agenda)
+    (eval-after-load 'org-indent '(diminish 'org-indent-mode))
+    :config
+    (setq org-startup-indented 't)
+    (setq org-hide-leading-stars 't))
 #+END_SRC
 ** Preserve tree structure when archiving
 #+BEGIN_SRC emacs-lisp
@@ -302,77 +302,77 @@ This ensures custom-set variables and faces land in their cozy home without any 
 *** TODO make my templates smarter
 *** export org files to LaTeX with ADMQ-math template
 #+BEGIN_SRC emacs-lisp
-(require 'ox-latex)
-(add-to-list 'org-latex-classes
-           '("ADMQ-math"
-         "\\documentclass[DIV=calc, 11pt]{scrartcl}
-\\usepackage{xpatch}
-\\makeatletter
-    \\xpatchcmd{\\@maketitle}{\\begin{center}}{\\begin{flushleft}}{}{}
-    \\xpatchcmd{\\@maketitle}{\\end{center}}{\\end{flushleft}}{}{}
-    \\xpatchcmd{\\@maketitle}{\\begin{tabular}[t]{c}}{\\begin{tabular}[t]{@{}l@{}}}{}{}
-\\makeatother
+  (require 'ox-latex)
+  (add-to-list 'org-latex-classes
+             '("ADMQ-math"
+           "\\documentclass[DIV=calc, 11pt]{scrartcl}
+  \\usepackage{xpatch}
+  \\makeatletter
+      \\xpatchcmd{\\@maketitle}{\\begin{center}}{\\begin{flushleft}}{}{}
+      \\xpatchcmd{\\@maketitle}{\\end{center}}{\\end{flushleft}}{}{}
+      \\xpatchcmd{\\@maketitle}{\\begin{tabular}[t]{c}}{\\begin{tabular}[t]{@{}l@{}}}{}{}
+  \\makeatother
 
-\\usepackage[activate=true,
-    final,
-    babel=true,
-    auto=true,
-    expansion,
-    protrusion=true,
-    tracking=true,
-    kerning=true,
-    spacing=true,
-    factor=0,
-    stretch=15,
-    shrink=30]{microtype}
+  \\usepackage[activate=true,
+      final,
+      babel=true,
+      auto=true,
+      expansion,
+      protrusion=true,
+      tracking=true,
+      kerning=true,
+      spacing=true,
+      factor=0,
+      stretch=15,
+      shrink=30]{microtype}
 
-\\usepackage[utf8]{inputenc}
-\\usepackage{polski}
-\\usepackage[polish]{babel}
-\\usepackage{setspace}
-\\usepackage[textsize=scriptsize, colorinlistoftodos, obeyDraft]{todonotes}
+  \\usepackage[utf8]{inputenc}
+  \\usepackage{polski}
+  \\usepackage[polish]{babel}
+  \\usepackage{setspace}
+  \\usepackage[textsize=scriptsize, colorinlistoftodos, obeyDraft]{todonotes}
 
-\\newcommand{\\todoim}[2][]
-{\\todo[color=red, #1]{#2}}
+  \\newcommand{\\todoim}[2][]
+  {\\todo[color=red, #1]{#2}}
 
-\\newcommand{\\todomed}[2][]
-{\\todo[color=yellow, #1]{#2}}
+  \\newcommand{\\todomed}[2][]
+  {\\todo[color=yellow, #1]{#2}}
 
-\\usepackage{marginnote}
-\\renewcommand*{\\marginfont}{\\color{gray}\\small\\ttfamily}
+  \\usepackage{marginnote}
+  \\renewcommand*{\\marginfont}{\\color{gray}\\small\\ttfamily}
 
-\\usepackage[hidelinks]{hyperref}
+  \\usepackage[hidelinks]{hyperref}
 
-\\setkomafont{date}{%
-    \\usekomafont{subtitle}
-    }
+  \\setkomafont{date}{%
+      \\usekomafont{subtitle}
+      }
 
-\\setkomafont{author}{%
-    \\usekomafont{subtitle}
-    }
+  \\setkomafont{author}{%
+      \\usekomafont{subtitle}
+      }
 
-[NO-DEFAULT-PACKAGES]
-      [PACKAGES]
-      [EXTRA]
+  [NO-DEFAULT-PACKAGES]
+        [PACKAGES]
+        [EXTRA]
 
-\\setstretch{1}
+  \\setstretch{1}
 
-\\usepackage{geometry}
-\\geometry{a4paper, margin=0.5in, right=1.7in, bottom=0.7in, footskip=0.3in, marginpar=1.2in}
+  \\usepackage{geometry}
+  \\geometry{a4paper, margin=0.5in, right=1.7in, bottom=0.7in, footskip=0.3in, marginpar=1.2in}
 
-\\usepackage{enumitem}
-\\setlist[itemize]{topsep=0.3em, itemsep=0em, label={\\scriptsize\\textbullet}}
-\\setlist[enumerate]{topsep=0.3em, leftmargin=2.8em, itemsep=0em, label={\\small\\textbf{\\arabic*.}}}
+  \\usepackage{enumitem}
+  \\setlist[itemize]{topsep=0.3em, itemsep=0em, label={\\scriptsize\\textbullet}}
+  \\setlist[enumerate]{topsep=0.3em, leftmargin=2.8em, itemsep=0em, label={\\small\\textbf{\\arabic*.}}}
 
-\\usepackage{amsmath, amsthm}
-\\usepackage{natbib}
+  \\usepackage{amsmath, amsthm}
+  \\usepackage{natbib}
 
-\\newtheorem{theorem}{Twierdzenie}
-\\numberwithin{equation}{section}
-\\setlength{\\parindent}{0em}"
-         ("\\section{%s}" . "\\section*{%s}")
-         ("\\subsection{%s}" . "\\subsection*{%s}")
-         ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+  \\newtheorem{theorem}{Twierdzenie}
+  \\numberwithin{equation}{section}
+  \\setlength{\\parindent}{0em}"
+           ("\\section{%s}" . "\\section*{%s}")
+           ("\\subsection{%s}" . "\\subsection*{%s}")
+           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
 #+END_SRC
 *** export org files to LaTeX with ADMQ-text template
 #+BEGIN_SRC emacs-lisp
@@ -455,7 +455,7 @@ This ensures custom-set variables and faces land in their cozy home without any 
         (setcdr (assoc "\\.pdf\\'" org-file-apps) "SumatraPDF %s")))
 #+END_SRC
 ** Define link types
-*** =menu=
+*** COMMENT =menu=
 Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-generalized-org-link-with-an-extendable-menu-of-actions/][A generalized org-link with an extendable menu of actions]])
 #+BEGIN_SRC emacs-lisp
   (defun option-r (link)
@@ -520,6 +520,12 @@ Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-gener
   (kill-buffer-and-window))
 (define-key org-journal-mode-map (kbd "C-x C-s") 'org-journal-save-entry-and-exit)
 #+END_SRC
+** =org-clip-link=                                                :shortcut:
+#+BEGIN_SRC emacs-lisp
+  (use-package org-cliplink
+    :config
+    (global-set-key (kbd "C-x p i") 'org-cliplink))
+#+END_SRC
 ** Src code execution
 #+BEGIN_SRC emacs-lisp
   (require 'ob-java)
@@ -576,19 +582,18 @@ Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-gener
     (add-hook 'prog-mode-hook 'company-quickhelp-mode))
 
 #+END_SRC
-** java
+** java                                                           :shortcut:
 #+BEGIN_SRC emacs-lisp
   (use-package autodisass-java-bytecode
-    :ensure t
     :defer t)
 
   (use-package google-c-style
     :defer t
-    :ensure t
     :commands
     (google-set-c-style))
 
   (use-package meghanada
+    :defer t
     :init
     (add-hook 'java-mode-hook
               (lambda ()
@@ -697,24 +702,43 @@ Will try working without line-numbers for a while
 #+BEGIN_SRC emacs-lisp
   (use-package diminish
     :config
-    (diminish 'projectile-mode)
+    (diminish 'smartparens-mode)
+    (diminish 'company-mode)
     (diminish 'activity-watch-mode)
+    (diminish 'projectile-mode)
     (diminish 'which-key-mode)
-    (diminish 'auto-revert-mode))
+    (diminish 'auto-revert-mode)
+    (diminish 'org-indent-mode)
+    (diminish 'visual-line-mode))
 #+END_SRC
 ** =rainbow-mode=
 #+BEGIN_SRC emacs-lisp
 (use-package rainbow-mode)
 #+END_SRC
 * Theme
-** Function to disable all themes
+** Load =zenburn= and set it as a default theme
+#+BEGIN_SRC emacs-lisp
+  (use-package zenburn-theme
+    :ensure t
+    :config
+    (set-face-attribute 'markdown-code-face nil
+                        :inherit 'nil)
+    (set-face-attribute 'mode-line nil
+                        :box nil)
+    (set-face-attribute 'mode-line-inactive nil
+                        :box nil)
+    (set-face-attribute 'vertical-border nil
+                        :foreground "#4F4F4F")
+    (load-theme 'zenburn))
+#+END_SRC
+** COMMENT Function to disable all themes
 #+BEGIN_SRC emacs-lisp
   (defun disable-all-themes ()
     "disable all active themes."
     (dolist (i custom-enabled-themes)
       (disable-theme i)))
 #+END_SRC
-** Custom colors for light/dark theme
+** COMMENT Custom colors for light/dark theme
 #+BEGIN_SRC emacs-lisp
 (defvar d-neo-dir-root '"#9989cc")
 (defvar d-neo-file-link '"#dbdde0")
@@ -727,24 +751,15 @@ Will try working without line-numbers for a while
 (defvar l-org-hide '"#f9f5d7")
 (defvar l-markdown-code-bg '"#f2eed0")
 #+END_SRC
-** Load =base16-phd= and set it as a default theme
-#+BEGIN_SRC
+** COMMENT Load =base16-phd= and set it as a default theme
+#+BEGIN_SRC emacs-lisp
 (use-package base16-theme
   :ensure t
   :config
   (load-theme 'base16-phd t))
 #+END_SRC
-** Load =zenburn= and set it as a default theme
+** COMMENT Customize neotree, org, markdown-code faces
 #+BEGIN_SRC emacs-lisp
-  (use-package zenburn-theme
-    :ensure t
-    :config
-    (set-face-attribute 'markdown-code-face nil
-                        :inherit 'nil)
-    (load-theme 'zenburn))
-#+END_SRC
-** Customize neotree, org, markdown-code faces
-#+BEGIN_SRC
 (set-face-attribute 'neo-dir-link-face nil
 		    :foreground d-neo-dir-root)
 
@@ -766,8 +781,8 @@ Will try working without line-numbers for a while
 (set-face-attribute 'org-hide nil
 		    :foreground d-org-hide)
 #+END_SRC
-** Light/dark theme key-switch (=base-gruvbox-light-hard= as a light theme) :shortcut:
-#+BEGIN_SRC
+** COMMENT Light/dark theme key-switch (=base-gruvbox-light-hard= as a light theme) :shortcut:
+#+BEGIN_SRC emacs-lisp
   (bind-keys ("C-c tl" . (lambda ()
                            (interactive)
                            (disable-all-themes)
