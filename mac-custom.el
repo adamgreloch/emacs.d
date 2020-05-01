@@ -26,7 +26,7 @@
  '(blink-cursor-mode t)
  '(custom-safe-themes
    (quote
-    ("76c5b2592c62f6b48923c00f97f74bcb7ddb741618283bdb2be35f3c0e1030e3" "aded61687237d1dff6325edb492bde536f40b048eab7246c61d5c6643c696b7f" "d54834a3ec381644880b49fb82ce9d6ccc11997510c7071cfbf3558c8f4b68f6" "cbd8e65d2452dfaed789f79c92d230aa8bdf413601b261dbb1291fb88605110c" "1dacaddeba04ac1d1a2c6c8100952283b63c4b5279f3d58fb76a4f5dd8936a2c" "4780d7ce6e5491e2c1190082f7fe0f812707fc77455616ab6f8b38e796cbffa9" "cc0dbb53a10215b696d391a90de635ba1699072745bf653b53774706999208e3" "85e6bb2425cbfeed2f2b367246ad11a62fb0f6d525c157038a0d0eaaabc1bfee" "100eeb65d336e3d8f419c0f09170f9fd30f688849c5e60a801a1e6addd8216cb" "cbd85ab34afb47003fa7f814a462c24affb1de81ebf172b78cb4e65186ba59d2" "bffb799032a7404b33e431e6a1c46dc0ca62f54fdd20744a35a57c3f78586646" "d0fd069415ef23ccc21ccb0e54d93bdbb996a6cce48ffce7f810826bb243502c" "ffba0482d3548c9494e84c1324d527f73ea4e43fff8dfd0e48faa8fc6d5c2bc7" default)))
+    ("76c5b2592c62f6b48923c00f97f74bcb7ddb741618283bdb2be35f3c0e1030e3" default)))
  '(display-line-numbers-width nil)
  '(elcord-display-buffer-details nil)
  '(elcord-display-elapsed t)
@@ -43,8 +43,12 @@
  '(org-journal-file-format "%Y%m%d.org")
  '(package-selected-packages
    (quote
-    (org-cliplink org-clip-link smartparens company-quickhelp realgud meghanada google-c-style autodisass-java-bytecode activity-watch-mode esup helm ido-grid-mode vmd-mode org-journal smex org-plus-contrib org-mode elcord rainbow-mode ido-vertical-mode ivy diminish flx-ido base16-theme which-key awesome-tab rjsx-mode company shell-pop auctex magit add-node-modules-path flycheck neotree ibuffer-projectile rainbow-delimiters ibuffer-sidebar ace-window dashboard dired-sidebar darkroom use-package markdown-mode)))
- '(shell-pop-autocd-to-working-dir nil)
+    (use-package-git polymode graphql-mode fence-edit org-cliplink org-clip-link smartparens company-quickhelp realgud meghanada google-c-style autodisass-java-bytecode activity-watch-mode esup helm ido-grid-mode vmd-mode org-journal smex org-plus-contrib org-mode elcord rainbow-mode ido-vertical-mode ivy diminish flx-ido base16-theme which-key awesome-tab rjsx-mode company shell-pop auctex magit add-node-modules-path flycheck neotree ibuffer-projectile rainbow-delimiters ibuffer-sidebar ace-window dashboard dired-sidebar darkroom use-package markdown-mode)))
+ '(shell-pop-shell-type
+   (quote
+    ("terminal" "*terminal*"
+     (lambda nil
+       (term shell-pop-term-shell)))))
  '(shell-pop-window-position "right"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

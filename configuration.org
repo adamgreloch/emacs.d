@@ -6,7 +6,7 @@
 ** TODO configure org-todo-keyword-faces
 ** TODO work on backups
 
-* Basic fundamental stuff
+* Mission critical stuff
 ** Set MELPA up and running.
 #+BEGIN_SRC emacs-lisp
 (require 'package)
@@ -67,11 +67,16 @@ This ensures custom-set variables and faces land in their cozy home without any 
       (message "%s" file)
       (delete-file file))))
 #+END_SRC
+** Confirm kill-emacs
+#+BEGIN_SRC emacs-lisp
+  (setq confirm-kill-emacs 'yes-or-no-p)
+#+END_SRC
 ** OSX-specific settings
 #+BEGIN_SRC emacs-lisp
   (with-system darwin
   ;;  (define-key key-translation-map (kbd "M-2") (kbd "~"))
     (setq mac-command-modifier 'super)
+    (setq mac-right-option-modifier 'nil)
     (setq mac-option-modifier 'meta)
     (setq mac-right-command-modifier 'control))
 #+END_SRC
@@ -174,7 +179,7 @@ This ensures custom-set variables and faces land in their cozy home without any 
 ** shell-pop
 #+BEGIN_SRC emacs-lisp
 (use-package shell-pop)
-
+(push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
 (global-set-key (kbd "C-!") 'shell-pop)
 #+END_SRC
 * VC/project management/IDO
@@ -563,7 +568,7 @@ Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-gener
 #+BEGIN_SRC emacs-lisp
   (use-package org-journal
   :config
-  (setq org-journal-dir "~/gdrive/journal/"))
+  (setq org-journal-dir "~/Dropbox/journal/"))
 #+END_SRC
 *** Kill journal buffer after saving buffer (By dhruvparamhans)
 #+BEGIN_SRC emacs-lisp
@@ -588,7 +593,7 @@ Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-gener
   (add-to-list 'org-babel-load-languages '(java . t))
 #+END_SRC
 * Prog modes
-** general settings
+** universal packages
 *** rainbow brackets
  #+BEGIN_SRC emacs-lisp
  (use-package rainbow-delimiters)
@@ -600,6 +605,26 @@ Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-gener
     :init
     (add-hook 'prog-mode-hook #'smartparens-mode)
     (require 'smartparens-config))
+#+END_SRC
+*** fence-edit
+Allows orgsrcblock-style GraphQL edits. 
+#+BEGIN_SRC emacs-lisp
+  (use-package fence-edit
+    :load-path "elisp/fence-edit"
+    :config
+    (setq fence-edit-blocks
+          (append '(("---" "---" yaml)
+                    ("+++" "+++" toml)
+                    ("graphql[ \t\n]*(?`" "`" graphql)
+                    ("<html" "</html>" rjsx t)
+                    ("<div" "</div>" rjsx t))
+                  fence-edit-blocks))
+    :hook
+    ;; Don't shadow the fence-edit binding
+    (markdown-mode-hook . (lambda () (bind-key "C-c '" nil markdown-mode-map)))
+    :bind
+    ("C-c '" . fence-edit-dwim))
+
 #+END_SRC
 ** smart-compile
 #+BEGIN_SRC emacs-lisp
@@ -615,6 +640,9 @@ Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-gener
   (use-package rjsx-mode
     :defer t
     :mode ("\\.js\\'" . rjsx-mode))
+
+  (use-package graphql-mode
+    :mode "\\(?:\\.g\\(?:\\(?:raph\\)?ql\\)\\)\\'")
 
   (use-package flycheck
     :defer t
