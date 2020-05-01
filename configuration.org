@@ -17,11 +17,23 @@
 #+BEGIN_SRC emacs-lisp
 (require 'server)
 #+END_SRC
+** Check OS
+[[https://stackoverflow.com/questions/1817257/how-to-determine-operating-system-in-elisp][emacs - How to determine operating system in elisp? - Stack Overflow]]
+#+BEGIN_SRC emacs-lisp
+  (defmacro with-system (type &rest body)
+    "Evaluate BODY if `system-type' equals TYPE."
+    (declare (indent defun))
+    `(when (eq system-type ',type)
+       ,@body))
+#+END_SRC
 ** Set custom-file
 This ensures custom-set variables and faces land in their cozy home without any issues
 #+BEGIN_SRC emacs-lisp
-(setq custom-file "~/.emacs.d/.emacs-custom.el")
-(load custom-file)
+  (with-system darwin
+    (setq custom-file "~/.emacs.d/mac-custom.el"))
+  (with-system windows-nt
+    (setq custom-file "~/.emacs.d/win-custom.el"))
+  (load custom-file)
 #+END_SRC
 ** =use-package= settings
 *** always ensure a package is installed
@@ -54,6 +66,50 @@ This ensures custom-set variables and faces land in their cozy home without any 
                   week))
       (message "%s" file)
       (delete-file file))))
+#+END_SRC
+** OSX-specific settings
+#+BEGIN_SRC emacs-lisp
+  (with-system darwin
+  ;;  (define-key key-translation-map (kbd "M-2") (kbd "~"))
+    (setq mac-command-modifier 'super)
+    (setq mac-option-modifier 'meta)
+    (setq mac-right-command-modifier 'control))
+#+END_SRC
+** Windows-specific settings
+#+BEGIN_SRC emacs-lisp
+  (with-system windows-nt
+    (setq w32-pass-apps-to-system nil)
+    (setq w32-apps-modifier 'super)
+    (setq default-directory "c:/git/" ))
+#+END_SRC
+** define powershell6 and set it as default for shell-pop
+#+BEGIN_SRC emacs-lisp
+  (with-system windows-nt
+    (defun powershell6 (&optional buffer)
+      "Launches a PowerShell 6 instance in buffer *powershell6* and switches to it."
+      (interactive)
+      (let ((buffer (or buffer "*powershell6*"))
+          (powershell6-prog "C:\\Program Files\\PowerShell\\6\\pwsh.exe"))
+        (make-comint-in-buffer "shell" "*powershell6*" powershell6-prog)
+        (switch-to-buffer buffer)))
+  
+    ;; make comint-derived modes' like `shell' output and prompt read-only
+    (setq comint-prompt-read-only t)
+  
+    (defun my-comint-preoutput-turn-buffer-read-only (text)
+    (propertize text 'read-only t))
+  
+    (add-hook 'comint-preoutput-filter-functions 'my-comint-preoutput-turn-buffer-read-only)
+  
+    (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist))
+#+END_SRC
+** TODO Move this to config:
+#+BEGIN_SRC emacs-lisp
+  (if (string-equal system-type "ms-dos")
+      '(setq shell-pop-shell-type (quote
+     ("powershell6" "*powershell6*"
+      (lambda nil
+        (powershell6))))))
 #+END_SRC
 * Performance settings
 ** set UTF-8 as default
@@ -119,7 +175,7 @@ This ensures custom-set variables and faces land in their cozy home without any 
 #+BEGIN_SRC emacs-lisp
 (use-package shell-pop)
 
-(global-set-key (kbd "C-`") 'shell-pop)
+(global-set-key (kbd "C-!") 'shell-pop)
 #+END_SRC
 * VC/project management/IDO
 ** Magit
@@ -148,8 +204,8 @@ This ensures custom-set variables and faces land in their cozy home without any 
 
 (bind-key "q" #'mu-magit-kill-buffers magit-status-mode-map)
 #+END_SRC
-** (disabled) Discord integration
-#+BEGIN_SRC
+** COMMENT Discord integration
+#+BEGIN_SRC emacs-lisp
 (use-package elcord)
 (elcord-mode)
 #+END_SRC
@@ -230,7 +286,7 @@ This ensures custom-set variables and faces land in their cozy home without any 
 #+BEGIN_SRC emacs-lisp
   (use-package helm)
 #+END_SRC
-* Productivity
+* COMMENT Productivity
 #+BEGIN_SRC emacs-lisp
   (use-package activity-watch-mode
     :config
@@ -721,15 +777,17 @@ Will try working without line-numbers for a while
   (use-package zenburn-theme
     :ensure t
     :config
+    (load-theme 'zenburn)
     (set-face-attribute 'markdown-code-face nil
                         :inherit 'nil)
     (set-face-attribute 'mode-line nil
                         :box nil)
     (set-face-attribute 'mode-line-inactive nil
                         :box nil)
+    (set-face-attribute 'header-line nil
+                        :box nil)
     (set-face-attribute 'vertical-border nil
-                        :foreground "#4F4F4F")
-    (load-theme 'zenburn))
+                        :foreground "#4F4F4F"))
 #+END_SRC
 ** COMMENT Function to disable all themes
 #+BEGIN_SRC emacs-lisp
@@ -841,37 +899,4 @@ Will try working without line-numbers for a while
                                 (set-face-attribute 'markdown-code-face nil                                                
                                                     :inherit ))))
 #+END_SRC
-* Windows-specific settings
-#+BEGIN_SRC emacs-lisp
-  (setq w32-pass-apps-to-system nil)
-  (setq w32-apps-modifier 'super)
-  (setq default-directory "c:/git/" )
-#+END_SRC
-** define powershell6 and set it as default for shell-pop
-#+BEGIN_SRC emacs-lisp
-  (defun powershell6 (&optional buffer)
-    "Launches a PowerShell 6 instance in buffer *powershell6* and switches to it."
-    (interactive)
-    (let ((buffer (or buffer "*powershell6*"))
-          (powershell6-prog "C:\\Program Files\\PowerShell\\6\\pwsh.exe"))
-      (make-comint-in-buffer "shell" "*powershell6*" powershell6-prog)
-      (switch-to-buffer buffer)))
 
-  ;; make comint-derived modes' like `shell' output and prompt read-only
-  (setq comint-prompt-read-only t)
-
-  (defun my-comint-preoutput-turn-buffer-read-only (text)
-    (propertize text 'read-only t))
-
-  (add-hook 'comint-preoutput-filter-functions 'my-comint-preoutput-turn-buffer-read-only)
-
-  (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
-#+END_SRC
-** TODO Move this to config:
-#+BEGIN_SRC emacs-lisp
-  (if (string-equal system-type "ms-dos")
-      '(setq shell-pop-shell-type (quote
-     ("powershell6" "*powershell6*"
-      (lambda nil
-        (powershell6))))))
-#+END_SRC
