@@ -1,10 +1,10 @@
 #+TITLE: Emacs configuration
 
 * Maintenance
-** TODO finish throwing and documenting stuff
-** TODO make =smart-compile= buffer somehow r/w for data input
-** TODO configure org-todo-keyword-faces
-** TODO work on backups
+** TODO Finish throwing and documenting stuff
+** TODO Make =smart-compile= buffer somehow r/w for data input
+** TODO Configure org-todo-keyword-faces
+** TODO Work on backups
 
 * Mission critical stuff
 ** Set MELPA up and running.
@@ -17,7 +17,7 @@
 #+BEGIN_SRC emacs-lisp
 (require 'server)
 #+END_SRC
-** Check OS
+** Check OS macro
 [[https://stackoverflow.com/questions/1817257/how-to-determine-operating-system-in-elisp][emacs - How to determine operating system in elisp? - Stack Overflow]]
 #+BEGIN_SRC emacs-lisp
   (defmacro with-system (type &rest body)
@@ -71,7 +71,8 @@ This ensures custom-set variables and faces land in their cozy home without any 
 #+BEGIN_SRC emacs-lisp
   (setq confirm-kill-emacs 'yes-or-no-p)
 #+END_SRC
-** OSX-specific settings
+* OSX-specific settings
+** bind modifier keys properly
 #+BEGIN_SRC emacs-lisp
   (with-system darwin
   ;;  (define-key key-translation-map (kbd "M-2") (kbd "~"))
@@ -80,14 +81,14 @@ This ensures custom-set variables and faces land in their cozy home without any 
     (setq mac-option-modifier 'meta)
     (setq mac-right-command-modifier 'control))
 #+END_SRC
-** Windows-specific settings
+* Windows-specific settings
 #+BEGIN_SRC emacs-lisp
   (with-system windows-nt
     (setq w32-pass-apps-to-system nil)
     (setq w32-apps-modifier 'super)
     (setq default-directory "c:/git/" ))
 #+END_SRC
-** define powershell6 and set it as default for shell-pop
+** Define powershell6 and set it as default for shell-pop
 #+BEGIN_SRC emacs-lisp
   (with-system windows-nt
     (defun powershell6 (&optional buffer)
@@ -108,6 +109,13 @@ This ensures custom-set variables and faces land in their cozy home without any 
   
     (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist))
 #+END_SRC
+** Run activity-watch
+#+BEGIN_SRC emacs-lisp
+  (with-system windows-nt
+    (use-package activity-watch-mode
+    :config
+    (global-activity-watch-mode)))
+#+END_SRC
 ** TODO Move this to config:
 #+BEGIN_SRC emacs-lisp
   (if (string-equal system-type "ms-dos")
@@ -117,22 +125,33 @@ This ensures custom-set variables and faces land in their cozy home without any 
         (powershell6))))))
 #+END_SRC
 * Performance settings
-** set UTF-8 as default
+** Set UTF-8 as default
 #+BEGIN_SRC emacs-lisp
 (set-language-environment "UTF-8")
 #+END_SRC
-** turn off graphical tooltips
+** Turn off graphical tooltips
 #+BEGIN_SRC emacs-lisp
 (tooltip-mode -1)
 #+END_SRC
-** profile dotfiles
+** Profile dotfiles
 #+BEGIN_SRC emacs-lisp
   (use-package esup
     :pin melpa
     :commands (esup))
 #+END_SRC
+* Locale and standarization
+** Format-time-string localization
+Necessary for proper =org-journal= entry title creation on OSX (i.e. /sobota, 2.05.20/)
+#+BEGIN_SRC emacs-lisp
+  (setq system-time-locale "pl_PL.UTF-8")
+#+END_SRC
+** Set UTF-8 as a default process coding system
+#+BEGIN_SRC emacs-lisp
+(setq default-process-coding-system '(utf-8 . utf-8))
+#+END_SRC
+
 * Navigation
-** neotree                                                        :shortcut:
+** Neotree                                                        :shortcut:
 #+BEGIN_SRC emacs-lisp
 (use-package neotree
   :config
@@ -140,43 +159,39 @@ This ensures custom-set variables and faces land in their cozy home without any 
 	neo-smart-open t))
 (global-set-key (kbd "C-x C-n") 'neotree-toggle)
 #+END_SRC
-** ibuffer-sidebar with project grouping                          :shortcut:
+** Ibuffer-sidebar with project grouping                          :shortcut:
 #+BEGIN_SRC emacs-lisp
-(use-package ibuffer-sidebar
-  :commands (ibuffer-sidebar-toggle-sidebar)
-  :config
-  (setq ibuffer-sidebar-use-custom-font 't
-	ibuffer-sidebar-face '(:family "Consolas" :height 120)))
+  (use-package ibuffer-sidebar
+    :commands (ibuffer-sidebar-toggle-sidebar))
 
-(use-package ibuffer-projectile
-  :commands (ibuffer-projectile-set-filter-groups
-             ibuffer-projectile-generate-filter-groups)
-  :init
-  (defun j-ibuffer-projectile-run ()
-    "Set up `ibuffer-projectile'."
-    (ibuffer-projectile-set-filter-groups)
-    (unless (eq ibuffer-sorting-mode 'alphabetic)
-      (ibuffer-do-sort-by-alphabetic)))
+  (use-package ibuffer-projectile
+    :commands (ibuffer-projectile-set-filter-groups
+               ibuffer-projectile-generate-filter-groups)
+    :init
+    (defun j-ibuffer-projectile-run ()
+      "Set up `ibuffer-projectile'."
+      (ibuffer-projectile-set-filter-groups)
+      (unless (eq ibuffer-sorting-mode 'alphabetic)
+        (ibuffer-do-sort-by-alphabetic)))
 
-  (add-hook 'ibuffer-sidebar-mode-hook #'j-ibuffer-projectile-run)
-  (add-hook 'ibuffer-hook #'j-ibuffer-projectile-run)
-  :config
-  (setq ibuffer-projectile-prefix ""))
+    (add-hook 'ibuffer-sidebar-mode-hook #'j-ibuffer-projectile-run)
+    (add-hook 'ibuffer-hook #'j-ibuffer-projectile-run)
+    :config
+    (setq ibuffer-projectile-prefix ""))
 
-(global-set-key (kbd "C-x C-m") 'ibuffer-sidebar-toggle-sidebar)
+  (global-set-key (kbd "C-x C-m") 'ibuffer-sidebar-toggle-sidebar)
 #+END_SRC
 ** ace-window                                                     :shortcut:
 #+BEGIN_SRC emacs-lisp
 (use-package ace-window)
 (global-set-key (kbd "M-o") 'ace-window)
 #+END_SRC
-* Shell
-** set UTF-8 as a default process coding system
+** Helm
 #+BEGIN_SRC emacs-lisp
-(setq default-process-coding-system '(utf-8 . utf-8))
+  (use-package helm)
 #+END_SRC
-
-** shell-pop
+* Shell
+** Shell-pop
 #+BEGIN_SRC emacs-lisp
 (use-package shell-pop)
 (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
@@ -286,16 +301,6 @@ This ensures custom-set variables and faces land in their cozy home without any 
   (setq TeX-auto-save t))
 
 (set-default 'preview-scale-function 1.3)
-#+END_SRC
-* Helm
-#+BEGIN_SRC emacs-lisp
-  (use-package helm)
-#+END_SRC
-* COMMENT Productivity
-#+BEGIN_SRC emacs-lisp
-  (use-package activity-watch-mode
-    :config
-    (global-activity-watch-mode))
 #+END_SRC
 * Org
 ** Fundamental configuration, basic shortcuts                      :shortcut:
@@ -567,8 +572,9 @@ Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-gener
 ** =org-journal= 
 #+BEGIN_SRC emacs-lisp
   (use-package org-journal
-  :config
-  (setq org-journal-dir "~/Dropbox/journal/"))
+    :config
+    (setq org-journal-date-format "%A, %d.%m.%y")
+    (setq org-journal-dir "~/Dropbox/journal/"))
 #+END_SRC
 *** Kill journal buffer after saving buffer (By dhruvparamhans)
 #+BEGIN_SRC emacs-lisp
@@ -593,7 +599,7 @@ Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-gener
   (add-to-list 'org-babel-load-languages '(java . t))
 #+END_SRC
 * Prog modes
-** universal packages
+** Universal packages
 *** rainbow brackets
  #+BEGIN_SRC emacs-lisp
  (use-package rainbow-delimiters)
@@ -635,7 +641,7 @@ Allows orgsrcblock-style GraphQL edits.
               (local-set-key (kbd "C-x c") 'smart-compile)))
     (add-to-list 'smart-compile-alist (list (cons "\\.pas\\'" "fpc %f && %n.exe"))))
 #+END_SRC
-** web-mode
+** Web-mode
 #+BEGIN_SRC emacs-lisp
   (use-package rjsx-mode
     :defer t
@@ -666,7 +672,7 @@ Allows orgsrcblock-style GraphQL edits.
     (add-hook 'prog-mode-hook 'company-quickhelp-mode))
 
 #+END_SRC
-** java                                                           :shortcut:
+** Java                                                           :shortcut:
 #+BEGIN_SRC emacs-lisp
   (use-package autodisass-java-bytecode
     :defer t)
@@ -740,7 +746,7 @@ Allows orgsrcblock-style GraphQL edits.
   (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
 #+END_SRC
 * Miscellaneous user interface tweaks
-** dashboard config
+** Dashboard config
 #+BEGIN_SRC emacs-lisp
 (use-package dashboard
   :ensure t
@@ -752,11 +758,11 @@ Allows orgsrcblock-style GraphQL edits.
   (setq dashboard-startup-banner '1)
   (dashboard-setup-startup-hook))
 #+END_SRC
-** replace selected text automatically when typing
+** Replace selected text automatically when typing
 #+BEGIN_SRC emacs-lisp
 (delete-selection-mode 1)
 #+END_SRC
-** disable ring bell, menu/tool/scroll bar
+** Disable ring bell, menu/tool/scroll bar
 #+BEGIN_SRC emacs-lisp
 (setq ring-bell-function 'ignore)
 (menu-bar-mode -1)
@@ -771,14 +777,14 @@ Allows orgsrcblock-style GraphQL edits.
                              (horizontal-scroll-bars . nil))))
 (add-hook 'after-make-frame-functions 'my-disable-scroll-bars)
 #+END_SRC
-** line numbers (disabled)
+** Line numbers (disabled) and truncate lines
 Will try working without line-numbers for a while
 #+BEGIN_SRC emacs-lisp
 ;; (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'toggle-truncate-lines nil)
 #+END_SRC
 *** TODO what on earth were =truncate-lines=?
-** cursor settings (blinking)
+** Cursor settings (blinking)
 #+BEGIN_SRC emacs-lisp
 (blink-cursor-mode +1)
 #+END_SRC
@@ -927,4 +933,3 @@ Will try working without line-numbers for a while
                                 (set-face-attribute 'markdown-code-face nil                                                
                                                     :inherit ))))
 #+END_SRC
-
