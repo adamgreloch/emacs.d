@@ -5,7 +5,6 @@
 ** TODO Make =smart-compile= buffer somehow r/w for data input
 ** TODO Configure org-todo-keyword-faces
 ** TODO Work on backups
-
 * Mission critical stuff
 ** Set MELPA up and running.
 #+BEGIN_SRC emacs-lisp
@@ -33,6 +32,9 @@ This ensures custom-set variables and faces land in their cozy home without any 
     (setq custom-file "~/.emacs.d/mac-custom.el"))
   (with-system windows-nt
     (setq custom-file "~/.emacs.d/win-custom.el"))
+  (with-system gnu/linux
+    (setq custom-file "~/.emacs.d/linux-custom.el"))
+
   (load custom-file)
 #+END_SRC
 ** =use-package= settings
@@ -116,14 +118,6 @@ This ensures custom-set variables and faces land in their cozy home without any 
     :config
     (global-activity-watch-mode)))
 #+END_SRC
-** TODO Move this to config:
-#+BEGIN_SRC emacs-lisp
-  (if (string-equal system-type "ms-dos")
-      '(setq shell-pop-shell-type (quote
-     ("powershell6" "*powershell6*"
-      (lambda nil
-        (powershell6))))))
-#+END_SRC
 * Performance settings
 ** Set UTF-8 as default
 #+BEGIN_SRC emacs-lisp
@@ -193,9 +187,11 @@ Necessary for proper =org-journal= entry title creation on OSX (i.e. /sobota, 2.
 * Shell
 ** Shell-pop
 #+BEGIN_SRC emacs-lisp
-(use-package shell-pop)
-(push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
-(global-set-key (kbd "C-!") 'shell-pop)
+  (use-package shell-pop
+    :config
+    (setq shell-pop-window-size 50))
+  (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
+  (global-set-key (kbd "C-!") 'shell-pop)
 #+END_SRC
 * VC/project management/IDO
 ** Magit
