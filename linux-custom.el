@@ -1,4 +1,3 @@
- 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -25,22 +24,21 @@
     (((output-dvi style-pstricks)
       "dvips and start")
      (output-dvi "Yap")
-     (output-pdf "SumatraPDF")
+     (output-pdf "Atril")
      (output-html "start"))))
- '(ansi-color-names-vector
-   ["#061229" "#d07346" "#99bf52" "#fbd461" "#5299bf" "#9989cc" "#5299bf" "#b8bbc2"])
  '(ansi-term-color-vector
    [unspecified "#061229" "#d07346" "#99bf52" "#fbd461" "#5299bf" "#9989cc" "#5299bf" "#b8bbc2"] t)
  '(blink-cursor-mode t)
  '(custom-safe-themes
    (quote
-    ("76c5b2592c62f6b48923c00f97f74bcb7ddb741618283bdb2be35f3c0e1030e3" default)))
+    ("939ea070fb0141cd035608b2baabc4bd50d8ecc86af8528df9d41f4d83664c6a" "76c5b2592c62f6b48923c00f97f74bcb7ddb741618283bdb2be35f3c0e1030e3" default)))
  '(display-line-numbers-width nil)
  '(elcord-display-buffer-details nil)
  '(elcord-display-elapsed t)
  '(elcord-use-major-mode-as-main-icon t)
  '(fringe-mode 6 nil (fringe))
- '(line-spacing 0.1)
+ '(inhibit-startup-screen t)
+ '(line-spacing 0.15)
  '(mouse-wheel-progressive-speed nil)
  '(mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
  '(neo-theme (quote ascii))
