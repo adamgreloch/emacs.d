@@ -665,6 +665,7 @@ Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-gener
 ** =org-journal= 
 #+BEGIN_SRC emacs-lisp
   (use-package org-journal
+    :bind("C-C C-j" . org-journal-new-entry)
     :config
     (defun org-journal-save-entry-and-exit()
       "Simple convenience function.

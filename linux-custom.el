@@ -47,6 +47,7 @@
  '(org-agenda-files
    (quote
     ("~/.emacs.d/configuration.org" "~/Dropbox/org/school.org" "~/Dropbox/org/freetime.org")))
+ '(org-journal-dir "~/Dropbox/journal/")
  '(org-journal-file-format "%Y%m%d.org")
  '(package-selected-packages
    (quote
