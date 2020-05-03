@@ -73,10 +73,22 @@ This ensures custom-set variables and faces land in their cozy home without any 
   (setq confirm-kill-emacs 'yes-or-no-p)
 #+END_SRC
 * Miscellaneous user interface tweaks
-** scrolloff
+** scroll-margin 
+vim-like scrolling
 #+begin_src emacs-lisp
   (setq scroll-step 1)
-  (setq scroll-margin 10)
+  (setq scroll-margin 12)
+
+  (defun org-export-dispatch-disable-scroll-margin (&rest args)
+      "disables scroll-margin in org export dispatcher buffer where it's unnecessary"
+    (let ((buf (get-buffer "*Org Export Dispatcher*")))
+      (when buf
+        (with-current-buffer buf
+          (set (make-local-variable 'scroll-margin) 0)))))
+
+  (advice-add 'org-export--dispatch-action :before #'org-export-dispatch-disable-scroll-margin)
+
+
 #+end_src
 ** Dashboard config
 #+BEGIN_SRC emacs-lisp
