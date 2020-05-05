@@ -137,6 +137,20 @@ Will try working without line-numbers for a while
     (set-face-attribute 'vertical-border nil
                         :foreground "#4F4F4F"))
 #+END_SRC
+* Evil mode
+#+begin_src emacs-lisp
+  (use-package evil
+    :demand t
+    :config
+    (evil-mode 1))
+#+end_src
+* Spaceline
+#+begin_src emacs-lisp
+  (use-package spaceline
+    :demand t
+    :config
+    (spaceline-spacemacs-theme))
+#+end_src
 * OSX-specific settings
 ** bind modifier keys properly
 #+BEGIN_SRC emacs-lisp
