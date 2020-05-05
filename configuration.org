@@ -707,8 +707,7 @@ Keeping it as a WIP ([[http://kitchingroup.cheme.cmu.edu/blog/2014/11/02/A-gener
 ** =org-clip-link=                                                :shortcut:
 #+BEGIN_SRC emacs-lisp
   (use-package org-cliplink
-    :config
-    (global-set-key (kbd "C-x p i") 'org-cliplink))
+    :bind ("C-x pi" . org-cliplink))
 #+END_SRC
 ** Src code execution
 #+BEGIN_SRC emacs-lisp
