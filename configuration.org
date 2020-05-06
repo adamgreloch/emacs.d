@@ -149,7 +149,8 @@ Will try working without line-numbers for a while
   (use-package spaceline
     :demand t
     :config
-    (spaceline-spacemacs-theme))
+    (spaceline-spacemacs-theme)
+    (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state))
 #+end_src
 * OSX-specific settings
 ** bind modifier keys properly
